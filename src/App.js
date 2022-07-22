@@ -6,10 +6,15 @@ import LoadingScreen from "./Components/Loading";
 
 // ----- 3. External Libraries ----- //
 import { useState, useEffect } from "react";
-
 import { Navbar, Container } from "react-bootstrap";
+import { Amplify, API, graphqlOperation } from "aws-amplify";
+import { withAuthenticator, Button, Heading } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
 
-function App() {
+import awsExports from "./aws-exports";
+Amplify.configure(awsExports);
+
+function App({ signOut, user }) {
   // ----- Properties ----- //
 
   const [loading, setLoading] = useState(true);
@@ -51,4 +56,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App);
