@@ -26,7 +26,7 @@ function App({ signOut, user }) {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 5000);
+    }, 1000);
   }, []);
 
   // ----- Return Statement ----- //
@@ -44,16 +44,14 @@ function App({ signOut, user }) {
           // className="navigation-bar"
           expand="lg"
         >
-          <Container>
-            {/* NAVIGATION BAR - BRAND  */}
-            <Navbar.Brand style={{ fontSize: "50px" }} href="#">
-              Filmista
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <NavBarSocialLinks logOut={signOut} />
-            </Navbar.Collapse>
-          </Container>
+          {/* NAVIGATION BAR - BRAND  */}
+          <Navbar.Brand className="brand" href="#">
+            Filmista
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <NavBarSocialLinks logOut={signOut} />
+          </Navbar.Collapse>
         </Navbar>
       )}
     </div>
