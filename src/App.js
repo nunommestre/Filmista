@@ -2,7 +2,9 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// ----- 2. Components ----- //
 import LoadingScreen from "./Components/Loading";
+import NavBarSocialLinks from "./Components/NavBarLinks";
 
 // ----- 3. External Libraries ----- //
 import { useState, useEffect } from "react";
@@ -48,7 +50,9 @@ function App({ signOut, user }) {
               Filmista
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav"></Navbar.Collapse>
+            <Navbar.Collapse id="basic-navbar-nav">
+              <NavBarSocialLinks logOut={signOut} />
+            </Navbar.Collapse>
           </Container>
         </Navbar>
       )}
