@@ -1,6 +1,7 @@
-// Top Rated for initial display: https://api.themoviedb.org/3/movie/top_rated?api_key=3989b90b8172707d9d75a1196763d35c&page=1
-// Movie Image: https://api.themoviedb.org/3/movie/{movie_id}/images?api_key=3989b90b8172707d9d75a1196763d35c
-// Search Anything: https://api.themoviedb.org/3/search/multi?&api_key=3989b90b8172707d9d75a1196763d35c&language=en-US&page=1&query=
+/*
+This video helped with pulling in API Data and some styling: https://www.youtube.com/watch?v=sZ0bZGfg_m4&t=1182s
+*/
+
 import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import "./styles.css";
