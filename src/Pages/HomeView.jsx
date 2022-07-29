@@ -1,11 +1,11 @@
+
 // ----- 1. CSS Files ----- //
-import "./App.css";
+import "../App.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // ----- 2. Components ----- //
-import LoadingScreen from "./Components/Loading";
-import NavBarSocialLinks from "./Components/NavBarLinks";
-import MovieDisplay from "./Components/Movie";
+import NavBarSocialLinks from "../Components/NavBarLinks";
+import MovieDisplay from "../Components/Movie";
 
 // ----- 3. External Libraries ----- //
 import { useState, useEffect } from "react";
@@ -15,12 +15,10 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 
 import "@aws-amplify/ui-react/styles.css";
 
-import awsExports from "./aws-exports";
+import awsExports from "../aws-exports";
 Amplify.configure(awsExports);
 
-function App({ signOut, user }) {
-  // ----- Properties ----- //
-  const movies = ["1", "2", "3"];
+function HomePage() {
   // ----- Return Statement ----- //
   return (
     <div>
@@ -38,17 +36,11 @@ function App({ signOut, user }) {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <NavBarSocialLinks logOut={signOut} />
+          <NavBarSocialLinks/>
         </Navbar.Collapse>
       </Navbar>
-      <div>
-        <Container>
-          <p>Hello {user.username}</p>
-        </Container>
-        <MovieDisplay />
-      </div>
     </div>
   );
 }
 
-export default withAuthenticator(App);
+export default HomePage;

@@ -1,0 +1,93 @@
+body {
+  background-color: rgb(119, 189, 235);
+  background-image: url(../../../Images/Background.jpg);
+}
+.movie-card {
+  width: 10rem;
+  margin: 1rem;
+  background-color: rgb(119, 189, 235);
+  border-radius: 1rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+.movie-card:hover .overview {
+  transform: translateY(0%);
+}
+.movie-card img {
+  max-width: 100%;
+}
+.movie-grid {
+  justify-content: center;
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: black;
+}
+.overview {
+  background-color: white;
+  color: blue;
+  display: inline;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 1rem;
+  overflow: auto;
+  max-height: 100%;
+  transform: translateY(110%);
+  transition: transform 0.4s ease-in-out;
+}
+p {
+  font-size: 20px;
+}
+.movie-buttons,
+.page-header {
+  text-align: center;
+}
+.movie-button {
+  margin-top: 1rem;
+}
+.page-header {
+  color: white;
+  background-color: black;
+  width: 50%;
+  margin-top: 10%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.search-bar {
+  border-radius: 4rem;
+  border: 2px solid white;
+  color: white;
+  background-color: transparent;
+  width: 75%;
+  padding-left: 1rem;
+}
+.search-bar::placeholder {
+  color: white;
+}
+.movie-rank {
+  background-color: blue;
+  color: white;
+  display: inline;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 1rem;
+  padding-bottom: 125px;
+  overflow: hidden;
+  max-height: 100%;
+  transform: translateY(110%);
+  transition: transform 0.4s ease-in-out;
+  z-index: 2;
+}
+.movie-rank-hidden {
+  height: 0px;
+}
+.movie-card:hover .movie-rank {
+  transform: translateY(0%);
+}
