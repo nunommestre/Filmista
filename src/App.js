@@ -2,11 +2,14 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// ----- 2. Components ----- //
-import LoadingScreen from "./Components/Loading";
+// ----- 2. Components & Pages ----- //
 import NavBarSocialLinks from "./Components/NavBarLinks";
-import MovieDisplay from "./Components/Movie";
-
+// ----- Pages ----- //
+import EditAccountPage from "./Pages/EditAccountPage";
+import CreatePlaylistPage from "./Pages/CreatePlaylistPage";
+import FriendsPage from "./Pages/FriendsPage";
+import ExplorePage from "./Pages/ExplorePage";
+import HomePage from "./Pages/HomePage";
 // ----- 3. External Libraries ----- //
 import { useState, useEffect } from "react";
 import { Navbar, Container } from "react-bootstrap";
@@ -20,7 +23,24 @@ Amplify.configure(awsExports);
 
 function App({ signOut, user }) {
   // ----- Properties ----- //
-  const movies = ["1", "2", "3"];
+  let Component;
+  switch (window.location.pathname) {
+    case "/":
+      Component = HomePage;
+      break;
+    case "/editAccount":
+      Component = EditAccountPage;
+      break;
+    case "/createPlaylist":
+      Component = CreatePlaylistPage;
+      break;
+    case "/friends":
+      Component = FriendsPage;
+      break;
+    case "/explore":
+      Component = ExplorePage;
+      break;
+  }
   // ----- Return Statement ----- //
   return (
     <div>
@@ -33,7 +53,7 @@ function App({ signOut, user }) {
         expand="lg"
       >
         {/* NAVIGATION BAR - BRAND  */}
-        <Navbar.Brand className="brand" href="#">
+        <Navbar.Brand className="brand" href="/">
           Filmista
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -42,10 +62,7 @@ function App({ signOut, user }) {
         </Navbar.Collapse>
       </Navbar>
       <div>
-        <Container>
-          <p>Hello {user.username}</p>
-        </Container>
-        <MovieDisplay />
+        <Component />
       </div>
     </div>
   );

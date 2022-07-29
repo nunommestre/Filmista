@@ -3,7 +3,7 @@ body {
   background-image: url(../../../Images/Background.jpg);
 }
 .movie-card {
-  width: 10rem;
+  width: 18rem;
   margin: 1rem;
   background-color: rgb(119, 189, 235);
   border-radius: 1rem;
