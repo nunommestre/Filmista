@@ -1,0 +1,19 @@
+.page-header {
+  color: white;
+  background-color: black;
+  width: 50%;
+  margin-top: 10%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.search-bar {
+  border-radius: 4rem;
+  border: 2px solid white;
+  color: white;
+  background-color: transparent;
+  width: 75%;
+  padding-left: 1rem;
+}
+.search-bar::placeholder {
+  color: white;
+}
