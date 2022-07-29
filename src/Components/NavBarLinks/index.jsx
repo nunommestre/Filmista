@@ -9,24 +9,24 @@ import "./styles.css";
 const NavBarSocialLinks = ({logOut}) => {
     return (
       <Nav className="ms-auto links">
-        <Nav.Link href="https://google.com">
+        <Nav.Link href="/explore">
           Explore 
           <FontAwesomeIcon icon={faRankingStar} className="nav-icon" />
         </Nav.Link>
-        <Nav.Link href="https://google.com">
+        <Nav.Link href="/friends">
           Friends 
           <FontAwesomeIcon icon={faUserFriends} className="nav-icon" />
         </Nav.Link>
         <NavDropdown title="Account">
-        <NavDropdown.Item href="https://google.com">
+        <NavDropdown.Item href="/">
           Home 
           <FontAwesomeIcon icon={faHouse} className="nav-icon" />
         </NavDropdown.Item>
-        <NavDropdown.Item href="https://google.com">
+        <NavDropdown.Item href="/editAccount">
           Edit Account
           <FontAwesomeIcon icon={faPenToSquare} className="nav-icon" />
         </NavDropdown.Item>
-        <NavDropdown.Item href="https://google.com">
+        <NavDropdown.Item href="/createPlaylist">
           Create Playlist
           <FontAwesomeIcon icon={faCirclePlus} className="nav-icon" />
         </NavDropdown.Item>
