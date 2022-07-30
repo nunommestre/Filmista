@@ -1,6 +1,5 @@
 body {
-  background-color: rgb(119, 189, 235);
-  background-image: url(../../../Images/Background.jpg);
+  background-color: black;
 }
 .friend-card {
   width: 18rem;

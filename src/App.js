@@ -47,7 +47,7 @@ function App({ signOut, user }) {
       <Navbar
         collapseOnSelect
         fixed="top"
-        bg="primary"
+        bg="dark"
         variant="dark"
         // className="navigation-bar"
         expand="lg"
