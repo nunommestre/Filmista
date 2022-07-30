@@ -1,0 +1,20 @@
+.edit-account-page {
+  padding-top: 5rem;
+  padding-left: 2rem;
+  background-color: rgb(0, 0, 0);
+  min-height: 100vh;
+  color: white;
+}
+.update-account {
+  margin-top: 5rem;
+  width: 9rem;
+  height: 3rem;
+  font-size: 20px;
+}
+.cancel-button {
+  margin-left: 5rem;
+  margin-top: 5rem;
+  width: 9rem;
+  height: 3rem;
+  font-size: 20px;
+}
