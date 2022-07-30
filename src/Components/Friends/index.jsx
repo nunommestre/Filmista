@@ -55,14 +55,14 @@ const FriendsDisplay = () => {
       </div>
       <div className="movie-grid">
         {movies.map((movie) => (
-          <Movie key={movie.id} {...movie} />
+          <Friend key={movie.id} {...movie} />
         ))}
       </div>
     </div>
   );
 };
 export default FriendsDisplay;
-const Movie = ({ title, poster_path, overview, vote_average }) => {
+const Friend = ({ title, poster_path}) => {
   return (
     <div className="friend-card">
       <img src={IMAGE_API + poster_path} alt={title} />
