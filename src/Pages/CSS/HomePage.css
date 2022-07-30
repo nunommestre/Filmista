@@ -1,0 +1,31 @@
+.home-page {
+  padding-top: 10rem;
+  background-color: rgb(0, 0, 0);
+  min-height: 100vh;
+  text-align: center;
+  color: white;
+}
+.home-header {
+  text-align: center;
+  color: white;
+}
+.profile-picture {
+  height: 15em;
+  width: 15em;
+}
+.stats-bar {
+  text-align: center;
+  margin: 3rem auto;
+  width: 50%;
+}
+.stat-section {
+  color: white;
+}
+.movie-bar {
+  justify-content: center;
+  margin-top: 1%;
+  margin-left: 10%;
+  padding-bottom: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+}

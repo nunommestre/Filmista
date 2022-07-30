@@ -2,8 +2,7 @@ import React from "react";
 import Nav from "react-bootstrap/Nav";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserFriends, faHouse, faRankingStar, faPenToSquare, faCirclePlus} from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@aws-amplify/ui-react";
-import { NavDropdown } from "react-bootstrap";
+import { NavDropdown, Button } from "react-bootstrap";
 import "./styles.css";
 
 const NavBarSocialLinks = ({logOut}) => {
@@ -32,7 +31,7 @@ const NavBarSocialLinks = ({logOut}) => {
         </NavDropdown.Item>
         <NavDropdown.Divider></NavDropdown.Divider>
         <NavDropdown.Item>
-        <Button onClick={logOut}>Sign Out</Button>
+        <Button variant="danger" onClick={logOut}>Sign Out</Button>
         </NavDropdown.Item>
         </NavDropdown>
       </Nav>
