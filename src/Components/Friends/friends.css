@@ -1,5 +1,6 @@
-body {
-  background-color: black;
+.friends-page {
+  padding-top: 10rem;
+  background-color: rgb(73, 153, 206);
 }
 .friend-card {
   width: 18rem;
@@ -13,40 +14,32 @@ body {
   width: 100%;
   height: 300px;
 }
-.movie-grid {
+.friends-grid {
   justify-content: center;
   margin-top: 1%;
   margin-left: 5%;
   margin-right: 5%;
   display: flex;
   flex-wrap: wrap;
-  background-color: black;
 }
 .bio {
   background-color: white;
-  color: blue;
+  color: rgb(33, 70, 119);
   padding-top: 300px;
   padding: 1rem;
 }
 p {
   font-size: 15px;
 }
-.page-header {
+.friends-header {
   text-align: center;
+  color: rgb(33, 70, 119);
 }
 .friend-buttons {
   display: flex;
   justify-content: space-between;
 }
-.page-header {
-  color: white;
-  background-color: black;
-  width: 50%;
-  margin-top: 10rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-.search-bar {
+.friends-search-bar {
   border-radius: 4rem;
   border: 2px solid white;
   color: white;
@@ -55,6 +48,6 @@ p {
   height: 3rem;
   padding-left: 1rem;
 }
-.search-bar::placeholder {
+.friends-search-bar::placeholder {
   color: white;
 }

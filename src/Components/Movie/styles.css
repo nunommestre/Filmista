@@ -1,5 +1,5 @@
-body {
-  background-color: rgb(119, 189, 235);
+.explore-page {
+  padding-top: 10rem;
   background-image: url(../../../Images/Background.jpg);
 }
 .movie-card {
@@ -58,10 +58,8 @@ p {
 .page-header {
   color: white;
   background-color: black;
-  width: 50%;
-  margin-top: 10rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 .search-bar {
   border-radius: 4rem;

@@ -4,7 +4,7 @@ This video helped with pulling in API Data and some styling: https://www.youtube
 
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import "./styles.css"
+import "./friends.css"
 
 // ----- 1. API's ----- //
 const SEARCH_API =
@@ -38,14 +38,14 @@ const FriendsDisplay = () => {
   };
   return (
     <div className="friends-page">
-      <div className="page-header">
+      <div className="friends-header">
         <h1>Welcome to the Friends Page</h1>
         <p>
           <em>Search for new friends with similar interests!</em>
         </p>
         <form onSubmit={formSubmission}>
           <input
-            className="search-bar"
+            className="friends-search-bar"
             type="text"
             placeholder="Search..."
             value={searchTerm}
@@ -53,7 +53,7 @@ const FriendsDisplay = () => {
           />
         </form>
       </div>
-      <div className="movie-grid">
+      <div className="friends-grid">
         {movies.map((movie) => (
           <Friend key={movie.id} {...movie} />
         ))}

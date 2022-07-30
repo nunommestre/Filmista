@@ -2,3 +2,6 @@
   padding-left: 50px;
   font-size: 2rem !important;
 }
+body {
+  background-image: url(../Images/Background.jpg);
+}
