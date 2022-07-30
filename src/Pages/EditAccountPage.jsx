@@ -10,7 +10,7 @@ const EditAccountPage = () => {
       <h3 className="ea-text">Name: </h3>
        <input className="ea-text name-bar" type="text" placeholder="Name..."/>
       <h3 className="ea-text">Bio: </h3>
-      <textarea rows = "4" cols = "20" name = "description" >
+      <textarea rows = "4" cols = "30" name = "description" >
            Bio...
          </textarea>
       <h3 className="ea-text" >Profile Picture: </h3>

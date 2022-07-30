@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <div className="home-page">
     <div className="home-header">
-    <img className="profile-picture" src="https://img.ecelebrityfacts.com/wp-content/uploads/2016/08/elon-musk-3067-30988-1471258987.jpg" alt="pfp" />
+    <Image className="profile-picture" src="https://img.ecelebrityfacts.com/wp-content/uploads/2016/08/elon-musk-3067-30988-1471258987.jpg" alt="pfp" />
     <h1>Welcome to Filmista!</h1>
     <p><em>Tap the empty image icon or go to "Edit Account" under Account to get started!</em></p>
     </div>
