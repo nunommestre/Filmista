@@ -12,7 +12,7 @@ import ExplorePage from "./Pages/ExplorePage";
 import HomePage from "./Pages/HomePage";
 // ----- 3. External Libraries ----- //
 import { useState, useEffect } from "react";
-import { Navbar, Container } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
 import { Amplify, API, graphqlOperation } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
@@ -61,9 +61,7 @@ function App({ signOut, user }) {
           <NavBarSocialLinks logOut={signOut} />
         </Navbar.Collapse>
       </Navbar>
-      <div>
-        <Component />
-      </div>
+      <Component />
     </div>
   );
 }

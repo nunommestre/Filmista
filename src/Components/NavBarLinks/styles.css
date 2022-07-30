@@ -1,6 +1,10 @@
 .nav-icon {
   padding-left: 15px;
+  height: 2rem;
 }
 .links {
   padding-right: 150px;
+}
+body {
+  font-size: 25px;
 }
