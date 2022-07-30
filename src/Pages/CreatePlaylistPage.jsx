@@ -14,7 +14,7 @@ const CreatePlaylistPage = () => {
     <input className="name-bar" type="file"/>
   </div>
     <Button variant="light" className="creation-button">CREATE</Button>
-    <Button variant="danger" className="cancel-button">Cancel</Button>
+    <a href="/"><Button variant="danger" className="cancel-button">CANCEL</Button></a>
   </div>
   );
 };

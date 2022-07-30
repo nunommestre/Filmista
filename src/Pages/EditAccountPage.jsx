@@ -17,7 +17,7 @@ const EditAccountPage = () => {
       <input className="file-bar" type="file"/>
     </div>
       <Button variant="light" className="update-account">UPDATE</Button>
-      <Button variant="danger" className="cancel-button">Cancel</Button>
+      <a href="/"><Button variant="danger" className="cancel-button">CANCEL</Button></a>
     </div>
   );
 }
