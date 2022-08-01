@@ -1,11 +1,20 @@
 import React from "react";
 import { Movie } from "../Components/Movie";
 import "./CSS/HomePage.css"
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
+import { Amplify, API, graphqlOperation, Auth } from "aws-amplify";
 const HomePage = () => {
   // ----- Return Statement ----- //
+  const signOut = async () => {
+    try {
+      await Auth.signOut();
+    } catch (error) {
+      console.log("error signing out: ", error);
+    }
+  };
   return (
     <div className="home-page">
+      <Button onClick={signOut}></Button>
     <div className="home-header">
     <Image className="profile-picture" src="https://img.ecelebrityfacts.com/wp-content/uploads/2016/08/elon-musk-3067-30988-1471258987.jpg" alt="pfp" />
     <h1>Welcome to Filmista!</h1>

@@ -16,7 +16,14 @@ import SignInPage from "./Pages/SignInPage";
 import { useState, useEffect } from "react";
 import { Navbar } from "react-bootstrap";
 import { Amplify, API, graphqlOperation, Auth } from "aws-amplify";
-import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Routes,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
 import "@aws-amplify/ui-react/styles.css";
@@ -53,11 +60,10 @@ function App() {
   // ----- Return Statement ----- //
   return (
     <Router>
+      {loggedIn ? <Navigate to="/" /> : <Outlet />}
       <Routes>
-        <Route exact path="/" element={<PrivateRoute />}>
-          <Route exact path="/" element={<HomePage />} />
-        </Route>
-        <Route exact path="/signUp" element={<SignUpPage />} />
+        <Route exact path="/" element={<HomePage />} />
+        <Route path="/signUp" element={<SignUpPage />} />
         <Route
           path="/signIn"
           element={<SignInPage onSignIn={assessLoggedInState} />}
