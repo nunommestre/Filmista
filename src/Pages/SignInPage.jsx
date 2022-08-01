@@ -1,40 +1,56 @@
-import React, {useRef} from "react";
+import React, {useState} from "react";
 import "./CSS/signUp.css"
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import { Amplify, API, graphqlOperation, Auth } from "aws-amplify";
+import { Navigate } from "react-router-dom"
+import "@aws-amplify/ui-react/styles.css";
 
-const SignInPage = () => {
+import awsExports from "../aws-exports";
+Amplify.configure(awsExports);
+
+const SignInPage = ({onSignIn}) => {
   // Refs
-  const nameRef = useRef() 
-  const bioRef = useRef() 
-  const emailRef = useRef() 
-  const passwordRef = useRef() 
-  const passwordConfirmRef = useRef() 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+
+  const signIn = async () => {
+    try {
+        const user = await Auth.signIn(email, password);
+        onSignIn()
+    } catch (error) {
+        console.log('error signing in', error);
+    }
+};
+
+
   // ----- Return Statement ----- //
   return (
     // https://startbootstrap.com/snippets/login helped with styling
-<div class="container sign-in">
-    <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card border-0 shadow rounded-3 my-5">
-          <div class=" sign-up-card card-body p-4 p-sm-5">
-          <h1 class="card-title text-center fw- bold mb-3 fs-5">Welcome Back</h1>
-            <form>
-              <div class="mb-3">
-                <h5>Email Address</h5>
-                <input type="email" class="form-control" placeholder="name@example.com" ref={emailRef} name="email" required />
+<div className="container sign-in">
+    <div className="row">
+      <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div className="card border-0 shadow rounded-3 my-5">
+          <div className=" sign-up-card card-body p-4 p-sm-5">
+          <h1 className="card-title text-center fw- bold mb-3 fs-5">Welcome Back</h1>
+              <div className="mb-3">
+                <h5>Username</h5>
+                <input type="email" name="username" className="form-control" placeholder="Email" value={email}
+                    onChange={e => setEmail(e.target.value)} required />
               </div>
-              <div class="mb-3">
+              <div name="username" className="mb-3">
                 <h5>Password</h5>
-                <input type="password" class="form-control" placeholder="Password" ref={passwordRef} name="password" required />
+                <input type="password" className="form-control" placeholder="Password" value={password}
+                    onChange={e => setPassword(e.target.value)} required />
               </div>
-              <div class="d-grid mb-3">
-                <button class="btn btn-dark btn-login text-uppercase fw-bold" type="submit">Sign In</button>
+              <div className="d-grid mb-3">
+                <button className="btn btn-dark btn-login text-uppercase fw-bold" onClick={signIn}>Sign In</button>
               </div>
-            </form>
-              <div class="d-grid mb-3">
-                <button class="btn btn-dark btn-login text-uppercase fw-bold" onClick={() => window.location.href="/signUp"}>Sign Up</button>
+              <div className="d-grid mb-3">
+                <button className="btn btn-dark btn-login text-uppercase fw-bold" onClick={() => window.location.href="/signUp"}>Sign Up</button>
               </div>
-              <div class="d-grid">
-                <button class="btn btn-link text-uppercase fw-bold">
+              <div className="d-grid">
+                <button className="btn btn-link text-uppercase fw-bold">
                     Forgot Password
                 </button>
               </div>
