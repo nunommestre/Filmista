@@ -1,4 +1,3 @@
-// ----- 1. CSS Files ----- //
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -10,6 +9,8 @@ import CreatePlaylistPage from "./Pages/CreatePlaylistPage";
 import FriendsPage from "./Pages/FriendsPage";
 import ExplorePage from "./Pages/ExplorePage";
 import HomePage from "./Pages/HomePage";
+import SignUpPage from "./Pages/SignUpPage";
+import SignInPage from "./Pages/SignInPage";
 // ----- 3. External Libraries ----- //
 import { useState, useEffect } from "react";
 import { Navbar } from "react-bootstrap";
@@ -21,12 +22,18 @@ import "@aws-amplify/ui-react/styles.css";
 import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
 
-function App({ signOut, user }) {
+function App() {
   // ----- Properties ----- //
   let Component;
   switch (window.location.pathname) {
     case "/":
       Component = HomePage;
+      break;
+    case "/signUp":
+      Component = SignUpPage;
+      break;
+    case "/signIn":
+      Component = SignInPage;
       break;
     case "/editAccount":
       Component = EditAccountPage;
@@ -41,241 +48,6 @@ function App({ signOut, user }) {
       Component = ExplorePage;
       break;
   }
-  // const components = {
-  //   Header() {
-  //     const { tokens } = All.useTheme();
-
-  //     return (
-  //       <All.View textAlign="center" padding={tokens.space.large}>
-  //         <All.Image
-  //           alt="Amplify logo"
-  //           src="https://docs.amplify.aws/assets/logo-dark.svg"
-  //         />
-  //       </All.View>
-  //     );
-  //   },
-
-  //   Footer() {
-  //     const { tokens } = All.useTheme();
-
-  //     return (
-  //       <All.View textAlign="center" padding={tokens.space.large}>
-  //         <All.Text color={tokens.colors.neutral[80]}>
-  //           &copy; All Rights Reserved
-  //         </All.Text>
-  //       </All.View>
-  //     );
-  //   },
-
-  //   SignIn: {
-  //     Header() {
-  //       const { tokens } = All.useTheme();
-
-  //       return (
-  //         <All.Heading
-  //           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-  //           level={3}
-  //         >
-  //           Sign in to your account
-  //         </All.Heading>
-  //       );
-  //     },
-  //     Footer() {
-  //       const { toResetPassword } = All.useAuthenticator();
-
-  //       return (
-  //         <All.View textAlign="center">
-  //           <All.Button
-  //             fontWeight="normal"
-  //             onClick={toResetPassword}
-  //             size="small"
-  //             variation="link"
-  //           >
-  //             Reset Password
-  //           </All.Button>
-  //         </All.View>
-  //       );
-  //     },
-  //   },
-
-  //   SignUp: {
-  //     Header() {
-  //       const { tokens } = All.useTheme();
-
-  //       return (
-  //         <All.Heading
-  //           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-  //           level={3}
-  //         >
-  //           Create a new account
-  //         </All.Heading>
-  //       );
-  //     },
-  //     Footer() {
-  //       const { toSignIn } = All.useAuthenticator();
-
-  //       return (
-  //         <All.View textAlign="center">
-  //           <All.Button
-  //             fontWeight="normal"
-  //             onClick={toSignIn}
-  //             size="small"
-  //             variation="link"
-  //           >
-  //             Back to Sign In
-  //           </All.Button>
-  //         </All.View>
-  //       );
-  //     },
-  //   },
-  //   ConfirmSignUp: {
-  //     Header() {
-  //       const { tokens } = All.useTheme();
-  //       return (
-  //         <All.Heading
-  //           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-  //           level={3}
-  //         >
-  //           Enter Information:
-  //         </All.Heading>
-  //       );
-  //     },
-  //     Footer() {
-  //       return <All.Text>Footer Information</All.Text>;
-  //     },
-  //   },
-  //   SetupTOTP: {
-  //     Header() {
-  //       const { tokens } = All.useTheme();
-  //       return (
-  //         <All.Heading
-  //           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-  //           level={3}
-  //         >
-  //           Enter Information:
-  //         </All.Heading>
-  //       );
-  //     },
-  //     Footer() {
-  //       return <All.Text>Footer Information</All.Text>;
-  //     },
-  //   },
-  //   ConfirmSignIn: {
-  //     Header() {
-  //       const { tokens } = All.useTheme();
-  //       return (
-  //         <All.Heading
-  //           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-  //           level={3}
-  //         >
-  //           Enter Information:
-  //         </All.Heading>
-  //       );
-  //     },
-  //     Footer() {
-  //       return <All.Text>Footer Information</All.Text>;
-  //     },
-  //   },
-  //   ResetPassword: {
-  //     Header() {
-  //       const { tokens } = All.useTheme();
-  //       return (
-  //         <All.Heading
-  //           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-  //           level={3}
-  //         >
-  //           Enter Information:
-  //         </All.Heading>
-  //       );
-  //     },
-  //     Footer() {
-  //       return <All.Text>Footer Information</All.Text>;
-  //     },
-  //   },
-  //   ConfirmResetPassword: {
-  //     Header() {
-  //       const { tokens } = All.useTheme();
-  //       return (
-  //         <All.Heading
-  //           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-  //           level={3}
-  //         >
-  //           Enter Information:
-  //         </All.Heading>
-  //       );
-  //     },
-  //     Footer() {
-  //       return <All.Text>Footer Information</All.Text>;
-  //     },
-  //   },
-  // };
-
-  // const formFields = {
-  //   signIn: {
-  //     username: {
-  //       labelHidden: false,
-  //       placeholder: "Enter your email",
-  //     },
-  //   },
-  //   signUp: {
-  //     password: {
-  //       labelHidden: false,
-  //       label: "Password:",
-  //       placeholder: "Enter your Password:",
-  //       isRequired: false,
-  //       order: 2,
-  //     },
-  //     confirm_password: {
-  //       labelHidden: false,
-  //       label: "Confirm Password:",
-  //       order: 1,
-  //     },
-  //   },
-  //   forceNewPassword: {
-  //     password: {
-  //       labelHidden: false,
-  //       placeholder: "Enter your Password:",
-  //     },
-  //   },
-  //   resetPassword: {
-  //     username: {
-  //       labelHidden: false,
-  //       placeholder: "Enter your email:",
-  //     },
-  //   },
-  //   confirmResetPassword: {
-  //     confirmation_code: {
-  //       labelHidden: false,
-  //       placeholder: "Enter your Confirmation Code:",
-  //       label: "New Label",
-  //       isRequired: false,
-  //     },
-  //     confirm_password: {
-  //       labelHidden: false,
-  //       placeholder: "Enter your Password Please:",
-  //     },
-  //   },
-  //   setupTOTP: {
-  //     QR: {
-  //       totpIssuer: "test issuer",
-  //       totpUsername: "amplify_qr_test_user",
-  //     },
-  //     confirmation_code: {
-  //       labelHidden: false,
-  //       label: "New Label",
-  //       placeholder: "Enter your Confirmation Code:",
-  //       isRequired: false,
-  //     },
-  //   },
-  //   confirmSignIn: {
-  //     confirmation_code: {
-  //       labelHidden: false,
-  //       label: "New Label",
-  //       placeholder: "Enter your Confirmation Code:",
-  //       isRequired: false,
-  //     },
-  //   },
-  // };
   // ----- Return Statement ----- //
   return (
     <div>
@@ -293,7 +65,8 @@ function App({ signOut, user }) {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <NavBarSocialLinks logOut={signOut} />
+          <NavBarSocialLinks />
+          {/* logOut={signOut} */}
         </Navbar.Collapse>
       </Navbar>
       <Component />
@@ -301,4 +74,4 @@ function App({ signOut, user }) {
   );
 }
 
-export default withAuthenticator(App, { socialProviders: ["google"] });
+export default App;
