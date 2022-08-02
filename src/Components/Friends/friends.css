@@ -1,6 +1,7 @@
 .friends-page {
   padding-top: 10rem;
   background-color: rgb(73, 153, 206);
+  min-height: 100vh;
 }
 .friend-card {
   width: 18rem;
