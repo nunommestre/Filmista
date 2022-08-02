@@ -1,3 +1,14 @@
+import {
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  getId,
+  updateDoc,
+  doc
+} from "firebase/firestore";
+import db from "../firebase";
 import React, { useEffect } from "react";
 import { Movie } from "../Components/Movie";
 import "./CSS/HomePage.css";
@@ -8,8 +19,24 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 const HomePage = ({ user }) => {
   // ----- Return Statement ----- //
   // const { attributes } = user;
+  let isRegistered;
+  let username;
+  let bio;
+//   useEffect(() => {
+//   const q = query(
+//     collection(db, "Users"),
+//     where("email", "==", user.attributes.email)
+//   );
+//   const querySnapshot = await getDocs(q);
+//   // If there is already a user with this email do not write them again
+//   if (querySnapshot.docs.length == 0) {
+//       isRegistered = false;
+//       querySnapshot.docs.data()
 
-  // console.log(getUser());
+//   } else {
+//     isRegistered = true;
+//   }
+// }, []);
   return (
     <div className="home-page">
       <div className="home-header">

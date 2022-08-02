@@ -1,3 +1,14 @@
+// Database
+
+import {
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  getId,
+} from "firebase/firestore";
+import db from "./firebase";
 // ----- 1. CSS Files ----- //
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,6 +33,29 @@ import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
 
 function App({ signOut, user }) {
+  // ----- User Data ------ //
+
+  const registerUser = async () => {
+    const q = query(
+      collection(db, "Users"),
+      where("email", "==", user.attributes.email)
+    );
+    const querySnapshot = await getDocs(q);
+    // If there is already a user with this email do not write them again
+    if (querySnapshot.docs.length == 0) {
+      const collectionRef = collection(db, "Users");
+      const payload = {
+        name: user.attributes.name,
+        email: user.attributes.email,
+      };
+      const docRef = await addDoc(collectionRef, payload);
+      console.log(docRef.id);
+      window.location.href = "/editAccount";
+    } else {
+      console.log("User already existsss ");
+      window.location.href = "/editAccount";
+    }
+  };
   // ----- Properties ----- //
   let component;
   switch (window.location.pathname) {
@@ -29,7 +63,7 @@ function App({ signOut, user }) {
       component = <HomePage user={user} />;
       break;
     case "/editAccount":
-      component = <EditAccountPage />;
+      component = <EditAccountPage user={user} />;
       break;
     case "/createPlaylist":
       component = <CreatePlaylistPage />;
@@ -296,7 +330,7 @@ function App({ signOut, user }) {
         </div>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <NavBarSocialLinks logOut={signOut} />
+          <NavBarSocialLinks logOut={signOut} register={registerUser} />
         </Navbar.Collapse>
       </Navbar>
       {component}
