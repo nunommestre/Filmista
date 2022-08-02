@@ -6,50 +6,46 @@ import {
   getDocs,
   getId,
   updateDoc,
-  doc
+  doc,
 } from "firebase/firestore";
 import db from "../firebase";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Movie } from "../Components/Movie";
 import "./CSS/HomePage.css";
 import { Image } from "react-bootstrap";
 import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
-const HomePage = ({ user }) => {
+const HomePage = ({ user, docID }) => {
   // ----- Return Statement ----- //
-  // const { attributes } = user;
-  let isRegistered;
-  let username;
-  let bio;
-//   useEffect(() => {
-//   const q = query(
-//     collection(db, "Users"),
-//     where("email", "==", user.attributes.email)
-//   );
-//   const querySnapshot = await getDocs(q);
-//   // If there is already a user with this email do not write them again
-//   if (querySnapshot.docs.length == 0) {
-//       isRegistered = false;
-//       querySnapshot.docs.data()
-
-//   } else {
-//     isRegistered = true;
-//   }
-// }, []);
+  const [isRegistered, setRegistered] = useState(false);
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  const FetchData = async () => {
+    const q = query(
+      collection(db, "Users"),
+      where("email", "==", user.attributes.email)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((document) => {
+      setUsername(document.data().name)
+        setBio(document.data().bio)
+        setRegistered(true);
+      });
+  };
+  FetchData();
   return (
     <div className="home-page">
       <div className="home-header">
         <Image
           className="profile-picture"
-          src="https://img.ecelebrityfacts.com/wp-content/uploads/2016/08/elon-musk-3067-30988-1471258987.jpg"
+          src="https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1"
           alt="pfp"
         />
-        <h1>{user.attributes.name}</h1>
+        <h1>{isRegistered ? username : user.attributes.name}</h1>
         <p>
           <em>
-            Tap the empty image icon or go to "Edit Account" under Account to
-            get started!
+            {isRegistered ? bio : "Tap the empty image icon or go to Edit Account under Account to get started!"}
           </em>
         </p>
       </div>

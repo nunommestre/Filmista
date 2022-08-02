@@ -35,6 +35,7 @@ Amplify.configure(awsExports);
 function App({ signOut, user }) {
   // ----- User Data ------ //
 
+  const [userID, setUserID] = useState("");
   const registerUser = async () => {
     const q = query(
       collection(db, "Users"),
@@ -49,7 +50,7 @@ function App({ signOut, user }) {
         email: user.attributes.email,
       };
       const docRef = await addDoc(collectionRef, payload);
-      console.log(docRef.id);
+      setUserID(docRef.id);
       window.location.href = "/editAccount";
     } else {
       console.log("User already existsss ");
@@ -60,7 +61,7 @@ function App({ signOut, user }) {
   let component;
   switch (window.location.pathname) {
     case "/":
-      component = <HomePage user={user} />;
+      component = <HomePage user={user} docID={userID} />;
       break;
     case "/editAccount":
       component = <EditAccountPage user={user} />;

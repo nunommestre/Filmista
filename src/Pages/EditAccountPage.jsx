@@ -12,9 +12,18 @@ import db from "../firebase";
 import React, {useState} from "react";
 import "./CSS/EditAccount.css"
 import{ Button } from "react-bootstrap";
+
+// https://www.encodedna.com/javascript/redirect-page-after-a-delay-using-javascript.htm#:~:text=Try%20it%20You%20can%20call%20the%20redirect_Page%20%28%29,delay%20is%20for%205000%20milliseconds%20or%205%20seconds.
+let redirect_Page = () => {
+  let tID = setTimeout(function () {
+      window.location.href = "/";
+      window.clearTimeout(tID);		// clear time out.
+  }, 1000);
+}
+
 const EditAccountPage = ({user}) => {
-  const [username, setUsername] = useState([]);
-  const [bio, setBio] = useState([]);
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
   // ----- Return Statement ----- //
   const editAccount = async () => {
   const q = query(
@@ -27,7 +36,7 @@ const EditAccountPage = ({user}) => {
       const payload = {name: username, bio: bio}
       updateDoc(docRef, payload)
       console.log("Check db :)")
-      window.location.href = "/";
+      redirect_Page();
     });
     };
   return (

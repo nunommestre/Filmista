@@ -41,5 +41,4 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 **.sample
-src/firebase.js
 #amplify-do-not-edit-end
