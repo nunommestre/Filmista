@@ -23,22 +23,22 @@ Amplify.configure(awsExports);
 
 function App({ signOut, user }) {
   // ----- Properties ----- //
-  let Component;
+  let component;
   switch (window.location.pathname) {
     case "/":
-      Component = HomePage;
+      component = <HomePage user={user} />;
       break;
     case "/editAccount":
-      Component = EditAccountPage;
+      component = <EditAccountPage />;
       break;
     case "/createPlaylist":
-      Component = CreatePlaylistPage;
+      component = <CreatePlaylistPage />;
       break;
     case "/friends":
-      Component = FriendsPage;
+      component = <FriendsPage />;
       break;
     case "/explore":
-      Component = ExplorePage;
+      component = <ExplorePage />;
       break;
   }
   // const components = {
@@ -291,12 +291,15 @@ function App({ signOut, user }) {
         <Navbar.Brand className="brand" href="/">
           Filmista
         </Navbar.Brand>
+        <div>
+          <h1>Hello {user.attributes.name}</h1>
+        </div>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <NavBarSocialLinks logOut={signOut} />
         </Navbar.Collapse>
       </Navbar>
-      <Component />
+      {component}
     </div>
   );
 }
