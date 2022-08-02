@@ -18,7 +18,7 @@ let redirect_Page = () => {
   let tID = setTimeout(function () {
       window.location.href = "/";
       window.clearTimeout(tID);		// clear time out.
-  }, 1000);
+  }, 1500);
 }
 
 const EditAccountPage = ({user}) => {
