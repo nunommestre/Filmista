@@ -67,7 +67,7 @@ const Friend = ({ title, poster_path}) => {
     <div className="friend-card">
       <img src={IMAGE_API + poster_path} alt={title} />
       <div className="bio">
-        <h6>{"Title: Friend Name"}</h6>
+        <h6>{"Friend Name"}</h6>
         <h6>Bio: </h6>
         <p>
           A short description set by each use that we will access from their bio
