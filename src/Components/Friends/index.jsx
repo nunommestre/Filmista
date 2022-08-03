@@ -1,8 +1,9 @@
 /*
 This video helped with pulling in API Data and some styling: https://www.youtube.com/watch?v=sZ0bZGfg_m4&t=1182s
 */
-
+import { onSnapshot, collection } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import db from "../../firebase";
 import Button from "react-bootstrap/Button";
 import "./friends.css"
 
@@ -14,28 +15,14 @@ const TOPRATED_API =
 const IMAGE_API = "https://image.tmdb.org/t/p/w500";
 
 const FriendsDisplay = () => {
-  const [movies, setMovies] = useState([]);
-  const [searchTerm, setSearch] = useState([]);
-  useEffect(() => {
-    fetch(TOPRATED_API)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setMovies(data.results);
-      });
-  }, []);
-  const formSubmission = (e) => {
-    e.preventDefault();
-    fetch(SEARCH_API + searchTerm)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setMovies(data.results);
-      });
-  };
-  const searchUpdate = (e) => {
-    setSearch(e.target.value);
-  };
+  const [friends, setFriends] = useState([{ name: "Loading...", id: "initial" }]);
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "Users"), (snapshot) =>
+        setFriends(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      ),
+    []
+  );
   return (
     <div className="friends-page">
       <div className="friends-header">
@@ -43,35 +30,32 @@ const FriendsDisplay = () => {
         <p>
           <em>Search for new friends with similar interests!</em>
         </p>
-        <form onSubmit={formSubmission}>
+        <form>
           <input
             className="friends-search-bar"
             type="text"
             placeholder="Search..."
-            value={searchTerm}
-            onChange={searchUpdate}
           />
         </form>
       </div>
       <div className="friends-grid">
-        {movies.map((movie) => (
-          <Friend key={movie.id} {...movie} />
+      {friends.map((friend) => (
+            <Friend key={friend.id} {...friend} />
         ))}
       </div>
     </div>
   );
 };
 export default FriendsDisplay;
-const Friend = ({ title, poster_path}) => {
+const Friend = ({ name, bio, poster_path}) => {
   return (
     <div className="friend-card">
-      <img src={IMAGE_API + poster_path} alt={title} />
+      <img src="https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1" alt={name} />
       <div className="bio">
-        <h6>{"Friend Name"}</h6>
+        <h6>{name}</h6>
         <h6>Bio: </h6>
         <p>
-          A short description set by each use that we will access from their bio
-          here for others to see!
+          {bio}
         </p>
         <div className="friend-buttons">
           <Button variant="danger" className="friend-button-left">
