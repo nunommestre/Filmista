@@ -1,3 +1,15 @@
+// Database
+
+import {
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  getId,
+} from "firebase/firestore";
+import db from "./firebase";
+// ----- 1. CSS Files ----- //
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -22,30 +34,54 @@ import "@aws-amplify/ui-react/styles.css";
 import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
 
-function App() {
+function App({ signOut, user }) {
+  // ----- User Data ------ //
+
+  const [userID, setUserID] = useState("");
+  const registerUser = async () => {
+    const q = query(
+      collection(db, "Users"),
+      where("email", "==", user.attributes.email)
+    );
+    const querySnapshot = await getDocs(q);
+    // If there is already a user with this email do not write them again
+    if (querySnapshot.docs.length == 0) {
+      const collectionRef = collection(db, "Users");
+      const payload = {
+        name: user.attributes.name,
+        email: user.attributes.email,
+      };
+      const docRef = await addDoc(collectionRef, payload);
+      setUserID(docRef.id);
+      window.location.href = "/editAccount";
+    } else {
+      console.log("User already existsss ");
+      window.location.href = "/editAccount";
+    }
+  };
   // ----- Properties ----- //
-  let Component;
+  let component;
   switch (window.location.pathname) {
     case "/":
-      Component = HomePage;
+      component = <HomePage user={user} docID={userID} />;
       break;
     case "/signUp":
-      Component = SignUpPage;
+      component = SignUpPage;
       break;
     case "/signIn":
-      Component = SignInPage;
+      component = SignInPage;
       break;
     case "/editAccount":
-      Component = EditAccountPage;
+      component = <EditAccountPage user={user} />;
       break;
     case "/createPlaylist":
-      Component = CreatePlaylistPage;
+      component = <CreatePlaylistPage />;
       break;
     case "/friends":
-      Component = FriendsPage;
+      component = <FriendsPage />;
       break;
     case "/explore":
-      Component = ExplorePage;
+      component = <ExplorePage />;
       break;
   }
   // ----- Return Statement ----- //
@@ -63,15 +99,17 @@ function App() {
         <Navbar.Brand className="brand" href="/">
           Filmista
         </Navbar.Brand>
+        <div>
+          <h1>Hello {user.attributes.name}</h1>
+        </div>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <NavBarSocialLinks />
-          {/* logOut={signOut} */}
+          <NavBarSocialLinks logOut={signOut} register={registerUser} />
         </Navbar.Collapse>
       </Navbar>
-      <Component />
+      {component}
     </div>
   );
 }
 
-export default App;
+export default withAuthenticator(App);

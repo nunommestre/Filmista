@@ -5,7 +5,7 @@ import { faUserFriends, faHouse, faRankingStar, faPenToSquare, faCirclePlus} fro
 import { NavDropdown, Button } from "react-bootstrap";
 import "./styles.css";
 
-const NavBarSocialLinks = ({logOut}) => {
+const NavBarSocialLinks = ({logOut, register}) => {
     return (
       <Nav className="ms-auto links">
         <Nav.Link href="/explore">
@@ -21,7 +21,7 @@ const NavBarSocialLinks = ({logOut}) => {
           Home 
           <FontAwesomeIcon icon={faHouse} className="nav-icon" />
         </NavDropdown.Item>
-        <NavDropdown.Item href="/editAccount">
+        <NavDropdown.Item onClick={register}>
           Edit Account
           <FontAwesomeIcon icon={faPenToSquare} className="nav-icon" />
         </NavDropdown.Item>

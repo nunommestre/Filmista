@@ -1,15 +1,20 @@
 {
-  "staging": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-amplify48247fa46b2c4-staging-181238-authRole",
-      "UnauthRoleArn": "arn:aws:iam::489319849676:role/amplify-amplify48247fa46b2c4-staging-181238-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::489319849676:role/amplify-amplify48247fa46b2c4-staging-181238-authRole",
+      "AuthRoleName": "amplify-filmista-dev-84542-authRole",
+      "UnauthRoleArn": "arn:aws:iam::489319849676:role/amplify-filmista-dev-84542-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::489319849676:role/amplify-filmista-dev-84542-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-amplify48247fa46b2c4-staging-181238-deployment",
-      "UnauthRoleName": "amplify-amplify48247fa46b2c4-staging-181238-unauthRole",
-      "StackName": "amplify-amplify48247fa46b2c4-staging-181238",
-      "StackId": "arn:aws:cloudformation:us-east-1:489319849676:stack/amplify-amplify48247fa46b2c4-staging-181238/36bda7b0-020e-11ed-8d93-0acfa4a2195b",
+      "DeploymentBucketName": "amplify-filmista-dev-84542-deployment",
+      "UnauthRoleName": "amplify-filmista-dev-84542-unauthRole",
+      "StackName": "amplify-filmista-dev-84542",
+      "StackId": "arn:aws:cloudformation:us-east-1:489319849676:stack/amplify-filmista-dev-84542/dc8597f0-1197-11ed-8bcf-0a71a25439e5",
       "AmplifyAppId": "dhmetels6hvl2"
+    },
+    "categories": {
+      "auth": {
+        "Filmista": {}
+      }
     }
   }
 }
