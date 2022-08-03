@@ -66,10 +66,10 @@ function App({ signOut, user }) {
       component = <HomePage user={user} docID={userID} />;
       break;
     case "/signUp":
-      Component = SignUpPage;
+      component = SignUpPage;
       break;
     case "/signIn":
-      Component = SignInPage;
+      component = SignInPage;
       break;
     case "/editAccount":
       component = <EditAccountPage user={user} />;
@@ -112,4 +112,4 @@ function App({ signOut, user }) {
   );
 }
 
-export default App;
+export default withAuthenticator(App);
