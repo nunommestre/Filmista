@@ -12,12 +12,13 @@ import db from "../firebase";
 import React, {useState} from "react";
 import "./CSS/EditAccount.css"
 import{ Button } from "react-bootstrap";
+import { ToastAlert } from "../Components/Toast/index"
 
 // https://www.encodedna.com/javascript/redirect-page-after-a-delay-using-javascript.htm#:~:text=Try%20it%20You%20can%20call%20the%20redirect_Page%20%28%29,delay%20is%20for%205000%20milliseconds%20or%205%20seconds.
 let redirect_Page = () => {
   let tID = setTimeout(function () {
-      window.location.href = "/";
-      window.clearTimeout(tID);		// clear time out.
+    window.location.href = "/";
+    window.clearTimeout(tID);		// clear time out.
   }, 1500);
 }
 
@@ -27,18 +28,29 @@ const EditAccountPage = ({user}) => {
   const [bio, setBio] = useState("");
   // ----- Return Statement ----- //
   const editAccount = async () => {
-  const q = query(
-    collection(db, "Users"),
-    where("email", "==", user.attributes.email)
-  );
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((document) => {
-      const docRef = doc(db, "Users", document.id)
-      const payload = {name: real_name, username: username.toLowerCase(), bio: bio}
+    const que = query(
+      collection(db, "Users"),
+      where("username", "==", username)
+    );
+    const snapshot = await getDocs(que);
+    if (snapshot.docs.length != 0) {
+      console.log("lol");
+      ToastAlert("This username is already in use.", "error")
+      return
+    }
+    const q = query(
+      collection(db, "Users"),
+      where("email", "==", user.attributes.email)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((document) => {
+        const docRef = doc(db, "Users", document.id)
+        const payload = {name: real_name, bio: bio, username: username.toLowerCase()}
       updateDoc(docRef, payload)
       console.log("Check db :)")
       redirect_Page();
     });
+    // If there is already a user with this email do not write them again
     };
   return (
         <form>
