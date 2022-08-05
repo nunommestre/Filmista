@@ -22,6 +22,7 @@ let redirect_Page = () => {
 }
 
 const EditAccountPage = ({user}) => {
+  const [real_name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   // ----- Return Statement ----- //
@@ -33,7 +34,7 @@ const EditAccountPage = ({user}) => {
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((document) => {
       const docRef = doc(db, "Users", document.id)
-      const payload = {name: username, bio: bio}
+      const payload = {name: real_name, username: username.toLowerCase(), bio: bio}
       updateDoc(docRef, payload)
       console.log("Check db :)")
       redirect_Page();
@@ -45,9 +46,13 @@ const EditAccountPage = ({user}) => {
       <div>
       <h1 className="ea-text" >Edit Account: </h1>
       <h3 className="ea-text">Name: </h3>
+       <input className="ea-text name-bar"  value={real_name}
+                    name="Name"
+                    onChange={e => setName(e.target.value)} type="text" placeholder="Name..."/>
+                    <h3 className="ea-text">Username: </h3>
        <input className="ea-text name-bar"  value={username}
                     name="username"
-                    onChange={e => setUsername(e.target.value)} type="text" placeholder="Name..."/>
+                    onChange={e => setUsername(e.target.value)} type="text" placeholder="username..."/>
       <h3 className="ea-text">Bio: </h3>
       <textarea rows = "4" cols = "30" name="bio"  value={bio}
                     onChange={e => setBio(e.target.value)} placeholder="Enter something about yourself...">

@@ -19,6 +19,7 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 const HomePage = ({ user, docID }) => {
   // ----- Return Statement ----- //
   const [isRegistered, setRegistered] = useState(false);
+  const [real_name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const FetchData = async () => {
@@ -28,7 +29,8 @@ const HomePage = ({ user, docID }) => {
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((document) => {
-      setUsername(document.data().name)
+      setName(document.data().name)
+      setUsername(document.data().username)
         setBio(document.data().bio)
         setRegistered(true);
       });
@@ -42,7 +44,8 @@ const HomePage = ({ user, docID }) => {
           src="https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1"
           alt="pfp"
         />
-        <h1>{isRegistered ? username : user.attributes.name}</h1>
+        <h1>{isRegistered ? "@" + username : "@" + user.attributes.username}</h1>
+        <h1>{isRegistered ? real_name : user.attributes.name}</h1>
         <p>
           <em>
             {isRegistered ? bio : "Tap the empty image icon or go to Edit Account under Account to get started!"}

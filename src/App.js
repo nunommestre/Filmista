@@ -52,7 +52,14 @@ function App({ signOut, user }) {
       const payload = {
         name: user.attributes.name,
         email: user.attributes.email.toLowerCase(),
+        username: user.attributes.name.toLowerCase(),
         id: "default",
+        pfp: "default",
+        bio: "default",
+        followers: [],
+        following: [],
+        movies: [],
+        playlists: [],
       };
       const docRef = await addDoc(collectionRef, payload);
       updateDoc(docRef, "id", docRef.id);
