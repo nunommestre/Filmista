@@ -1,7 +1,7 @@
 /*
 This video helped with pulling in API Data and some styling: https://www.youtube.com/watch?v=sZ0bZGfg_m4&t=1182s
 */
-import { onSnapshot, collection } from "firebase/firestore";
+import { onSnapshot, collection, query, where, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import db from "../../firebase";
 import Button from "react-bootstrap/Button";
@@ -16,6 +16,7 @@ const IMAGE_API = "https://image.tmdb.org/t/p/w500";
 
 const FriendsDisplay = () => {
   const [friends, setFriends] = useState([{ name: "Loading...", id: "initial" }]);
+  const [searchTerm, setSearch] = useState([]);
   useEffect(
     () =>
       onSnapshot(collection(db, "Users"), (snapshot) =>
@@ -23,18 +24,31 @@ const FriendsDisplay = () => {
       ),
     []
   );
+  const formSubmission = async (e) => {
+    e.preventDefault();
+    const q = query(
+      collection(db, "Users"),
+      where("name", "==", searchTerm)
+    );
+    const querySnapshot = await getDocs(q);
+    setFriends(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  };
+  const searchUpdate = (e) => {
+    setSearch(e.target.value);
+  };
   return (
     <div className="friends-page">
       <div className="friends-header">
         <h1>Welcome to the Friends Page</h1>
         <p>
-          <em>Search for new friends with similar interests!</em>
+          <em>Search for new friends with similar interests! Disclaimer search is case sensitive!</em>
         </p>
-        <form>
+        <form onSubmit={formSubmission} >
           <input
             className="friends-search-bar"
             type="text"
             placeholder="Search..."
+            value={searchTerm} onChange={searchUpdate}
           />
         </form>
       </div>

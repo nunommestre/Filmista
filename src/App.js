@@ -7,6 +7,8 @@ import {
   where,
   getDocs,
   getId,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 import db from "./firebase";
 // ----- 1. CSS Files ----- //
@@ -49,9 +51,11 @@ function App({ signOut, user }) {
       const collectionRef = collection(db, "Users");
       const payload = {
         name: user.attributes.name,
-        email: user.attributes.email,
+        email: user.attributes.email.toLowerCase(),
+        id: "default",
       };
       const docRef = await addDoc(collectionRef, payload);
+      updateDoc(docRef, "id", docRef.id);
       setUserID(docRef.id);
       window.location.href = "/editAccount";
     } else {
