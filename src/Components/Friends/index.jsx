@@ -12,17 +12,18 @@ import {
   arrayUnion,
   arrayRemove
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import db from "../../firebase";
 import Button from "react-bootstrap/Button";
 import "./friends.css";
 import { ToastAlert } from "../Toast";
+import { FriendContext } from "../../friendContext";
 
 // ----- 1. API's ----- //
 const SEARCH_API =
-  "https://api.themoviedb.org/3/search/multi?&api_key=3989b90b8172707d9d75a1196763d35c&language=en-US&page=1&query=";
+"https://api.themoviedb.org/3/search/multi?&api_key=3989b90b8172707d9d75a1196763d35c&language=en-US&page=1&query=";
 const TOPRATED_API =
-  "https://api.themoviedb.org/3/movie/top_rated?api_key=3989b90b8172707d9d75a1196763d35c&page=1";
+"https://api.themoviedb.org/3/movie/top_rated?api_key=3989b90b8172707d9d75a1196763d35c&page=1";
 const IMAGE_API = "https://image.tmdb.org/t/p/w500";
 
 const FriendsDisplay = ({user}) => {
@@ -32,27 +33,27 @@ const FriendsDisplay = ({user}) => {
   const [searchTerm, setSearch] = useState([]);
   useEffect(
     () =>
-      onSnapshot(collection(db, "Users"), (snapshot) =>
-        setFriends(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      ),
+    onSnapshot(collection(db, "Users"), (snapshot) =>
+    setFriends(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    ),
     []
-  );
-  const formSubmission = async (e) => {
-    e.preventDefault();
-    const q = query(
-      collection(db, "Users"),
-      where("username", "==", searchTerm.toLowerCase())
     );
-    const querySnapshot = await getDocs(q);
-    setFriends(
-      querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    );
-  };
-  const searchUpdate = (e) => {
-    setSearch(e.target.value);
-  };
-  return (
-    <div className="friends-page">
+    const formSubmission = async (e) => {
+      e.preventDefault();
+      const q = query(
+        collection(db, "Users"),
+        where("username", "==", searchTerm.toLowerCase())
+        );
+        const querySnapshot = await getDocs(q);
+        setFriends(
+          querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+          );
+        };
+        const searchUpdate = (e) => {
+          setSearch(e.target.value);
+        };
+        return (
+          <div className="friends-page">
       <div className="friends-header">
         <h1>Welcome to the Friends Page</h1>
         <p>
@@ -65,19 +66,25 @@ const FriendsDisplay = ({user}) => {
             placeholder="Search..."
             value={searchTerm}
             onChange={searchUpdate}
-          />
+            />
         </form>
       </div>
       <div className="friends-grid">
         {friends.map((friend) => (
           <Friend key={friend.id} {...friend} user={user}/>
-        ))}
+          ))}
       </div>
     </div>
   );
 };
 export default FriendsDisplay;
 const Friend = ({ username, name, bio, id, user, pfp }) => {
+  const {friendId, setFriendID} = useContext(FriendContext);
+  const viewFriend = () => {
+    setFriendID(id);
+    console.log(friendId);
+    redirect_Page();
+  };
   return (
     <div className="friend-card">
       <img
@@ -93,6 +100,7 @@ const Friend = ({ username, name, bio, id, user, pfp }) => {
           <Button variant="danger" className="friend-button-left" onClick={() => removeFriend(id, user)}>
             Remove
           </Button>
+          <Button variant="info" className="friend-button-left" onClick={viewFriend} >View</Button>
           <Button
             variant="success"
             className="friend-button-left"
@@ -142,3 +150,9 @@ const removeFriend = async (id, user) => {
       updateDoc(docRef, payload)
   })
 };
+let redirect_Page = () => {
+  let tID = setTimeout(function () {
+    window.location.href = "/viewFriend";
+    window.clearTimeout(tID);		// clear time out.
+  }, 1500);
+}

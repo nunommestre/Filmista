@@ -18,13 +18,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // ----- 2. Components & Pages ----- //
 import NavBarSocialLinks from "./Components/NavBarLinks";
 // ----- Pages ----- //
+import { FriendContext } from "./friendContext";
 import EditAccountPage from "./Pages/EditAccountPage";
 import CreatePlaylistPage from "./Pages/CreatePlaylistPage";
 import FriendsPage from "./Pages/FriendsPage";
+import ViewFriendPage from "./Pages/viewFriend";
 import ExplorePage from "./Pages/ExplorePage";
 import HomePage from "./Pages/HomePage";
-import SignUpPage from "./Pages/SignUpPage";
-import SignInPage from "./Pages/SignInPage";
 // ----- 3. External Libraries ----- //
 import { useState, useEffect } from "react";
 import { Navbar } from "react-bootstrap";
@@ -38,7 +38,7 @@ Amplify.configure(awsExports);
 
 function App({ signOut, user }) {
   // ----- User Data ------ //
-
+  const [friendID, setFriendID] = useState("default");
   const [userID, setUserID] = useState("");
   const registerUser = async () => {
     const q = query(
@@ -76,12 +76,6 @@ function App({ signOut, user }) {
     case "/":
       component = <HomePage user={user} docID={userID} />;
       break;
-    case "/signUp":
-      component = SignUpPage;
-      break;
-    case "/signIn":
-      component = SignInPage;
-      break;
     case "/editAccount":
       component = <EditAccountPage user={user} />;
       break;
@@ -89,7 +83,18 @@ function App({ signOut, user }) {
       component = <CreatePlaylistPage />;
       break;
     case "/friends":
-      component = <FriendsPage user={user} />;
+      component = (
+        <FriendContext.Provider value={{ friendID, setFriendID }}>
+          <FriendsPage user={user} />
+        </FriendContext.Provider>
+      );
+      break;
+    case "/viewFriend":
+      component = (
+        <FriendContext.Provider value={{ friendID, setFriendID }}>
+          <ViewFriendPage friendId={friendID} />
+        </FriendContext.Provider>
+      );
       break;
     case "/explore":
       component = <ExplorePage />;
