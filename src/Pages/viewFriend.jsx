@@ -16,24 +16,24 @@ import { Image } from "react-bootstrap";
 import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
-const HomePage = ({ user, docID }) => {
+const ViewFriendPage = () => {
   // ----- Return Statement ----- //
-  const [isRegistered, setRegistered] = useState(false);
   const [real_name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const FetchData = async () => {
-    const q = query(
-      collection(db, "Users"),
-      where("email", "==", user.attributes.email)
-    );
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const id = urlParams.get("id");
+    console.log(id);
+    const q = query(collection(db, "Users"), where("id", "==", id));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((document) => {
-      setName(document.data().name)
-      setUsername(document.data().username)
-        setBio(document.data().bio)
-        setRegistered(true);
-      });
+      setName(document.data().name);
+      setUsername(document.data().username);
+      setBio(document.data().bio);
+      console.log(document.data().id);
+    });
   };
   FetchData();
   return (
@@ -44,12 +44,10 @@ const HomePage = ({ user, docID }) => {
           src="https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1"
           alt="pfp"
         />
-        <h1>{isRegistered ? "@" + username : "@" + user.attributes.username}</h1>
-        <h1>{isRegistered ? real_name : user.attributes.name}</h1>
+        <h1>{"@" + username}</h1>
+        <h1>{real_name}</h1>
         <p>
-          <em>
-            {isRegistered ? bio : "Tap the empty image icon or go to Edit Account under Account to get started!"}
-          </em>
+          <em>{bio}</em>
         </p>
       </div>
       <div className="row stats-bar">
@@ -94,4 +92,4 @@ const HomePage = ({ user, docID }) => {
   );
 };
 
-export default HomePage;
+export default ViewFriendPage;
