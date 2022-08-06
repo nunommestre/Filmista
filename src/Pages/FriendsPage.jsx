@@ -1,10 +1,10 @@
 import React from "react";
 import FriendsDisplay from "../Components/Friends";
   
-const FriendsPage = () => {
+const FriendsPage = ({user}) => {
   return (
     <div>
-      <FriendsDisplay />
+      <FriendsDisplay user={user}/>
     </div>
   );
 };

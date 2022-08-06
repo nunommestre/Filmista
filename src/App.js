@@ -89,7 +89,7 @@ function App({ signOut, user }) {
       component = <CreatePlaylistPage />;
       break;
     case "/friends":
-      component = <FriendsPage />;
+      component = <FriendsPage user={user} />;
       break;
     case "/explore":
       component = <ExplorePage />;

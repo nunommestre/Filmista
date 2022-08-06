@@ -7,11 +7,16 @@ import {
   query,
   where,
   getDocs,
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import db from "../../firebase";
 import Button from "react-bootstrap/Button";
 import "./friends.css";
+import { ToastAlert } from "../Toast";
 
 // ----- 1. API's ----- //
 const SEARCH_API =
@@ -20,7 +25,7 @@ const TOPRATED_API =
   "https://api.themoviedb.org/3/movie/top_rated?api_key=3989b90b8172707d9d75a1196763d35c&page=1";
 const IMAGE_API = "https://image.tmdb.org/t/p/w500";
 
-const FriendsDisplay = () => {
+const FriendsDisplay = ({user}) => {
   const [friends, setFriends] = useState([
     { name: "Loading...", id: "initial" },
   ]);
@@ -65,14 +70,14 @@ const FriendsDisplay = () => {
       </div>
       <div className="friends-grid">
         {friends.map((friend) => (
-          <Friend key={friend.id} {...friend} />
+          <Friend key={friend.id} {...friend} user={user}/>
         ))}
       </div>
     </div>
   );
 };
 export default FriendsDisplay;
-const Friend = ({ username, name, bio, id, poster_path }) => {
+const Friend = ({ username, name, bio, id, user, pfp }) => {
   return (
     <div className="friend-card">
       <img
@@ -85,13 +90,13 @@ const Friend = ({ username, name, bio, id, poster_path }) => {
         <h6>Bio: </h6>
         <p>{bio}</p>
         <div className="friend-buttons">
-          <Button variant="danger" className="friend-button-left">
+          <Button variant="danger" className="friend-button-left" onClick={() => removeFriend(id, user)}>
             Remove
           </Button>
           <Button
             variant="success"
             className="friend-button-left"
-            onClick={() => addFriend(id)}
+            onClick={() => addFriend(id, user)}
           >
             Add
           </Button>
@@ -101,4 +106,39 @@ const Friend = ({ username, name, bio, id, poster_path }) => {
   );
 };
 
-const addFriend = async (id, currentUserId) => {};
+const addFriend = async (id, user) => {
+  const q = query(
+    collection(db, "Users"),
+    where("email", "==", user.attributes.email)
+  );
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((document) => {
+    const userDocRef = doc(db, "Users", document.id)
+    const UserPayload = {following: arrayUnion(id)}
+      updateDoc(userDocRef, UserPayload).then(function() {
+        ToastAlert("You started following a new friend!", "success")
+      });
+      console.log("Check db :)")
+      const docRef = doc(db, "Users", id)
+      const payload = {followers: arrayUnion(document.id)}
+      updateDoc(docRef, payload)
+  })
+};
+const removeFriend = async (id, user) => {
+  const q = query(
+    collection(db, "Users"),
+    where("email", "==", user.attributes.email)
+  );
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((document) => {
+    const userDocRef = doc(db, "Users", document.id)
+    const UserPayload = {following: arrayRemove(id)}
+      updateDoc(userDocRef, UserPayload).then(function() {
+        ToastAlert("Successfully unfollowed!", "error")
+      });
+      console.log("Check db :)")
+      const docRef = doc(db, "Users", id)
+      const payload = {followers: arrayRemove(document.id)}
+      updateDoc(docRef, payload)
+  })
+};
