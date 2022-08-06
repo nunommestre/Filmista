@@ -38,7 +38,6 @@ Amplify.configure(awsExports);
 
 function App({ signOut, user }) {
   // ----- User Data ------ //
-  const [friendID, setFriendID] = useState("default");
   const [userID, setUserID] = useState("");
   const registerUser = async () => {
     const q = query(
@@ -83,18 +82,10 @@ function App({ signOut, user }) {
       component = <CreatePlaylistPage />;
       break;
     case "/friends":
-      component = (
-        <FriendContext.Provider value={{ friendID, setFriendID }}>
-          <FriendsPage user={user} />
-        </FriendContext.Provider>
-      );
+      component = <FriendsPage user={user} />;
       break;
     case "/viewFriend":
-      component = (
-        <FriendContext.Provider value={{ friendID, setFriendID }}>
-          <ViewFriendPage friendId={friendID} />
-        </FriendContext.Provider>
-      );
+      component = <ViewFriendPage />;
       break;
     case "/explore":
       component = <ExplorePage />;
