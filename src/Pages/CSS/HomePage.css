@@ -29,3 +29,12 @@
   display: flex;
   flex-wrap: wrap;
 }
+.playlist-grid {
+  justify-content: center;
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: black;
+}

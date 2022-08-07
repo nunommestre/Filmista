@@ -22,6 +22,9 @@ const HomePage = ({ user, docID }) => {
   const [real_name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
+  const [following, setFollowing] = useState(0);
+  const [followers, setFollowers] = useState(0);
+  const [movieCount, setMovieCount] = useState(0);
   const FetchData = async () => {
     const q = query(
       collection(db, "Users"),
@@ -31,8 +34,11 @@ const HomePage = ({ user, docID }) => {
     querySnapshot.forEach((document) => {
       setName(document.data().name)
       setUsername(document.data().username)
-        setBio(document.data().bio)
-        setRegistered(true);
+      setBio(document.data().bio)
+      setFollowers(document.data().followers.length)
+      setFollowing(document.data().following.length)
+      setMovieCount(document.data().movies.length)
+      setRegistered(true);
       });
   };
   FetchData();
@@ -55,40 +61,24 @@ const HomePage = ({ user, docID }) => {
       <div className="row stats-bar">
         <div className="col-sm-4 stat-section">
           <h3>Movies Watched</h3>
-          <h3>100</h3>
+          <h3>{movieCount}</h3>
         </div>
         <div className="col-sm-4 stat-section">
           <h3>Followers</h3>
-          <h3>100</h3>
+          <h3>{followers}</h3>
         </div>
         <div className="col-sm-4 stat-section">
           <h3>Following</h3>
-          <h3>100</h3>
-        </div>
-      </div>
-      <h3>Top Movies</h3>
-      <div className="row movie-bar">
-        <div className="col-sm-4 stat-section">
-          <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-        </div>
-        <div className="col-sm-4 stat-section">
-          <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-        </div>
-        <div className="col-sm-4 stat-section">
-          <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
+          <h3>{following}</h3>
         </div>
       </div>
       <h3>Playlists</h3>
-      <div className="row movie-bar">
-        <div className="col-sm-4 stat-section">
+      <div className="playlist-grid">
           <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-        </div>
-        <div className="col-sm-4 stat-section">
           <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-        </div>
-        <div className="col-sm-4 stat-section">
           <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-        </div>
+          <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
+
       </div>
     </div>
   );
