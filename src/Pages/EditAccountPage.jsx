@@ -28,7 +28,8 @@ const EditAccountPage = ({ user }) => {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [image, setImage] = useState("");
-  const [filePath, setFilePath] = useState("");
+  const [filePath, setFilePath] = useState();
+  const [pfp, setPfp] = useState();
   const FetchData = async () => {
     const q = query(
       collection(db, "Users"),
@@ -39,7 +40,7 @@ const EditAccountPage = ({ user }) => {
       setName(document.data().name);
       setUsername(document.data().username);
       setBio(document.data().bio);
-      // setPfp(document.data().pfp);
+      setPfp(document.data().pfp);
     });
   };
   useEffect(() => {
