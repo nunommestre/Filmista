@@ -25,7 +25,7 @@ let redirect_Page = () => {
 
 const EditAccountPage = ({user}) => {
   const [image , setImage] = useState('');
-  const [filePath, setFilePath] = useState("");
+  const [filePath, setFilePath] = useState();
 const uploadImage = ()=>{
   if(image == null)
     return;
@@ -48,8 +48,7 @@ const uploadImage = ()=>{
       xhr.send();
   
       // Or inserted into an <img> element
-      let urlString = url.toString();
-      setFilePath(urlString);
+      setFilePath(url);
       console.log("url:" + filePath);
     })
     .catch((error) => {
