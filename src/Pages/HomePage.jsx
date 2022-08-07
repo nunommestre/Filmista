@@ -22,6 +22,7 @@ const HomePage = ({ user, docID }) => {
   const [real_name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
+  const [pfp, setPfp] = useState("");
   const [following, setFollowing] = useState(0);
   const [followers, setFollowers] = useState(0);
   const [movieCount, setMovieCount] = useState(0);
@@ -35,6 +36,7 @@ const HomePage = ({ user, docID }) => {
       setName(document.data().name)
       setUsername(document.data().username)
       setBio(document.data().bio)
+      setPfp(document.data().pfp)
       setFollowers(document.data().followers.length)
       setFollowing(document.data().following.length)
       setMovieCount(document.data().movies.length)
@@ -47,7 +49,7 @@ const HomePage = ({ user, docID }) => {
       <div className="home-header">
         <Image
           className="profile-picture"
-          src="https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1"
+          src={pfp}
           alt="pfp"
         />
         <h1>{isRegistered ? "@" + username : "@" + user.attributes.username}</h1>

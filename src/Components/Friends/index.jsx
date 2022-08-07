@@ -20,9 +20,9 @@ import { ToastAlert } from "../Toast";
 
 // ----- 1. API's ----- //
 const SEARCH_API =
-  "https://api.themoviedb.org/3/search/multi?&api_key=3989b90b8172707d9d75a1196763d35c&language=en-US&page=1&query=";
+"https://api.themoviedb.org/3/search/multi?&api_key=3989b90b8172707d9d75a1196763d35c&language=en-US&page=1&query=";
 const TOPRATED_API =
-  "https://api.themoviedb.org/3/movie/top_rated?api_key=3989b90b8172707d9d75a1196763d35c&page=1";
+"https://api.themoviedb.org/3/movie/top_rated?api_key=3989b90b8172707d9d75a1196763d35c&page=1";
 const IMAGE_API = "https://image.tmdb.org/t/p/w500";
 
 const FriendsDisplay = ({ user }) => {
@@ -32,27 +32,27 @@ const FriendsDisplay = ({ user }) => {
   const [searchTerm, setSearch] = useState([]);
   useEffect(
     () =>
-      onSnapshot(collection(db, "Users"), (snapshot) =>
-        setFriends(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      ),
+    onSnapshot(collection(db, "Users"), (snapshot) =>
+    setFriends(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    ),
     []
-  );
-  const formSubmission = async (e) => {
-    e.preventDefault();
-    const q = query(
-      collection(db, "Users"),
-      where("username", "==", searchTerm.toLowerCase())
     );
-    const querySnapshot = await getDocs(q);
-    setFriends(
-      querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    );
-  };
-  const searchUpdate = (e) => {
-    setSearch(e.target.value);
-  };
-  return (
-    <div className="friends-page">
+    const formSubmission = async (e) => {
+      e.preventDefault();
+      const q = query(
+        collection(db, "Users"),
+        where("username", "==", searchTerm.toLowerCase())
+        );
+        const querySnapshot = await getDocs(q);
+        setFriends(
+          querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+          );
+        };
+        const searchUpdate = (e) => {
+          setSearch(e.target.value);
+        };
+        return (
+          <div className="friends-page">
       <div className="friends-header">
         <h1>Welcome to the Friends Page</h1>
         <p>
@@ -65,13 +65,13 @@ const FriendsDisplay = ({ user }) => {
             placeholder="Search..."
             value={searchTerm}
             onChange={searchUpdate}
-          />
+            />
         </form>
       </div>
       <div className="friends-grid">
         {friends.map((friend) => (
           <Friend key={friend.id} {...friend} user={user} />
-        ))}
+          ))}
       </div>
     </div>
   );
@@ -84,7 +84,7 @@ const Friend = ({ username, name, bio, id, user, pfp }) => {
   return (
     <div className="friend-card">
       <img
-        src="https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1"
+        src={pfp}
         alt={name}
       />
       <div className="bio">
@@ -131,7 +131,7 @@ const addFriend = async (id, user) => {
     const UserPayload = { following: arrayUnion(id) };
     updateDoc(userDocRef, UserPayload).then(function () {
       ToastAlert("You started following a new friend!", "success");
-    });
+      });
     console.log("Check db :)");
     const docRef = doc(db, "Users", id);
     const payload = { followers: arrayUnion(document.id) };
@@ -149,7 +149,7 @@ const removeFriend = async (id, user) => {
     const UserPayload = { following: arrayRemove(id) };
     updateDoc(userDocRef, UserPayload).then(function () {
       ToastAlert("Successfully unfollowed!", "error");
-    });
+      });
     console.log("Check db :)");
     const docRef = doc(db, "Users", id);
     const payload = { followers: arrayRemove(document.id) };

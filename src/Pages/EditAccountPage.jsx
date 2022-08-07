@@ -9,6 +9,7 @@ import {
   doc
 } from "firebase/firestore";
 import db from "../firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import React, {useState} from "react";
 import "./CSS/EditAccount.css"
 import{ Button } from "react-bootstrap";
@@ -23,11 +24,44 @@ let redirect_Page = () => {
 }
 
 const EditAccountPage = ({user}) => {
+  const [image , setImage] = useState('');
+  const [filePath, setFilePath] = useState("");
+const uploadImage = ()=>{
+  if(image == null)
+    return;
+    const storage = getStorage();
+    const imageRef = ref(storage, `${image.name}`);
+    console.log(image.name);
+    uploadBytes(imageRef, image).then((snapshot) => {
+      console.log('Uploaded a blob or file!');
+    });
+    getDownloadURL(imageRef).then((url) => {
+      // `url` is the download URL for 'images/stars.jpg'
+  
+      // This can be downloaded directly:
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = (event) => {
+        const blob = xhr.response;
+      };
+      xhr.open('GET', url);
+      xhr.send();
+  
+      // Or inserted into an <img> element
+      let urlString = url.toString();
+      setFilePath(urlString);
+      console.log("url:" + filePath);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
   const [real_name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   // ----- Return Statement ----- //
   const editAccount = async () => {
+    uploadImage();
     const que = query(
       collection(db, "Users"),
       where("username", "==", username)
@@ -45,7 +79,7 @@ const EditAccountPage = ({user}) => {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((document) => {
         const docRef = doc(db, "Users", document.id)
-        const payload = {name: real_name, bio: bio, username: username.toLowerCase()}
+        const payload = {name: real_name, bio: bio, username: username.toLowerCase(), pfp: filePath }
       updateDoc(docRef, payload)
       console.log("Check db :)")
       redirect_Page();
@@ -70,7 +104,7 @@ const EditAccountPage = ({user}) => {
                     onChange={e => setBio(e.target.value)} placeholder="Enter something about yourself...">
          </textarea>
       <h3 className="ea-text" >Profile Picture: </h3>
-      <input className="file-bar" type="file"/>
+      <input className="file-bar" type="file" onChange={(e)=>{setImage(e.target.files[0])}}/>
     </div>
       <Button variant="light" className="update-account" onClick={editAccount}>UPDATE</Button>
       <a href="/"><Button variant="danger" className="cancel-button">CANCEL</Button></a>
