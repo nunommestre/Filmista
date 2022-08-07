@@ -81,12 +81,17 @@ const Friend = ({ username, name, bio, id, user, pfp }) => {
   const viewFriend = () => {
     redirect_Page(id);
   };
-  if (pfp == "")
-    pfp =
-      "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
   return (
     <div className="friend-card">
-      <img src={pfp} alt={name} />
+      <img
+        src={pfp}
+        alt={name}
+        onError={(event) => {
+          event.target.src =
+            "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
+          event.onerror = null;
+        }}
+      />
       <div className="bio">
         <h6>@{username}</h6>
         <h6>{name}</h6>

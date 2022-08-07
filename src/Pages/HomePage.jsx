@@ -43,15 +43,20 @@ const HomePage = ({ user, docID }) => {
       setRegistered(true);
     });
   };
-  if (pfp == "")
-    setPfp(
-      "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1"
-    );
   FetchData();
   return (
     <div className="home-page">
       <div className="home-header">
-        <Image className="profile-picture" src={pfp} alt="pfp" />
+        <Image
+          className="profile-picture"
+          src={pfp}
+          alt="pfp"
+          onError={(event) => {
+            event.target.src =
+              "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
+            event.onerror = null;
+          }}
+        />
         <h1>
           {isRegistered ? "@" + username : "@" + user.attributes.username}
         </h1>

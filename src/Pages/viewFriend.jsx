@@ -37,9 +37,9 @@ const ViewFriendPage = () => {
       setUsername(document.data().username);
       setBio(document.data().bio);
       setPfp(document.data().pfp);
-      setFollowers(document.data().followers.length)
-      setFollowing(document.data().following.length)
-      setMovieCount(document.data().movies.length)
+      setFollowers(document.data().followers.length);
+      setFollowing(document.data().following.length);
+      setMovieCount(document.data().movies.length);
       console.log(document.data().id);
     });
   };
@@ -51,6 +51,11 @@ const ViewFriendPage = () => {
           className="profile-picture"
           src={pfp}
           alt="pfp"
+          onError={(event) => {
+            event.target.src =
+              "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
+            event.onerror = null;
+          }}
         />
         <h1>{"@" + username}</h1>
         <h1>{real_name}</h1>
@@ -74,11 +79,10 @@ const ViewFriendPage = () => {
       </div>
       <h3>Playlists</h3>
       <div className="playlist-grid">
-          <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-          <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-          <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-          <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-
+        <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
+        <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
+        <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
+        <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
       </div>
     </div>
   );
