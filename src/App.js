@@ -88,7 +88,7 @@ function App({ signOut, user }) {
       component = <ViewFriendPage />;
       break;
     case "/explore":
-      component = <ExplorePage />;
+      component = <ExplorePage user={user} />;
       break;
   }
   // ----- Return Statement ----- //
