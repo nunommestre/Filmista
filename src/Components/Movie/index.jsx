@@ -72,10 +72,9 @@ export default MovieDisplay;
 const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
   const [rateStatus, setRateStatus] = useState(["movie-rank-hidden"]);
   const [rate, setRate] = useState("");
-  const [UIrate, setUIrate] = useState("");
   const [comment, setComment] = useState("");
   const [ratingID, setRatingID] = useState("");
-  const rateMovie = async () => {
+  const storeMovie = async () => {
     const q = query(
       collection(db, "Movies"),
       where("tmbd_id", "==", id)
@@ -90,23 +89,26 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
         tmbd_rate: vote_average,
         poster: poster_path,
         tmbd_id: id,
-        ratings: [""],
+        ratings: [],
         id: "default"
       };
       const docRef = await addDoc(collectionRef, payload);
       updateDoc(docRef, "id", docRef.id);
+      createRating();
       // hideRateScreen();
     } else {
       console.log("Movie already exists in the db");
     }
-    const que = query(
+  }
+  const createRating = async () => {
+    const q = query(
       collection(db, "Movies"),
       where("tmbd_id", "==", id)
-    );
-    const snapshot = await getDocs(que);
-    // If there is already a user with this email do not write them again
-    if (snapshot.docs.length == 0) {
-      console.log("Movie already exists in the db");
+      );
+      const querySnapshot = await getDocs(q);
+      // If there is already a user with this email do not write them again
+    if (querySnapshot.docs.length == 0) {
+      console.log("Movie not in db");
     } else {
       const collectionRef = collection(db, "Ratings");
       const payload = {
@@ -119,24 +121,28 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
       updateDoc(rateRef, "id", rateRef.id);
       setRatingID(rateRef.id);
     }
-
-
-    const qu = query(
+  }
+  const linkRating = async () => {
+    const q = query(
       collection(db, "Movies"),
       where("tmbd_id", "==", id)
       );
-      const quSnapshot = await getDocs(qu);
-      quSnapshot.forEach((document) => {
-        const userDocRef = doc(db, "Movies", document.id);
-        const UserPayload = { ratings: arrayUnion(ratingID) };
-        updateDoc(userDocRef, UserPayload).then(function () {
-          ToastAlert("You rated" + title, "success");
-        });
-        console.log(quSnapshot.docs[0].data().ratings[0])
-        console.log("Check db :)");
-        // setUIrate(document.data().ratings)
-        hideRateScreen();
+      const querySnapshot = await getDocs(q);
+      // If there is already a user with this email do not write them again
+    querySnapshot.forEach((document) => {
+      const userDocRef = doc(db, "Movies", document.id);
+      const UserPayload = { ratings: arrayUnion(ratingID) };
+      updateDoc(userDocRef, UserPayload).then(function () {
+        ToastAlert("You rated" + title, "success");
+        
       });
+      console.log("Check db :)");
+      hideRateScreen();
+    });
+  }
+  const rateMovie = () => {
+    storeMovie();
+    linkRating();
   };
 
 
@@ -149,7 +155,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
       <div className="overview">
           <h6>{"Title: " + title}</h6>
           <h6>Rating:  <span>{vote_average}</span></h6>
-          <h6>Your Rating:  <span>{UIrate}</span></h6>
+          <h6>Your Rating:  <span>{rate}</span></h6>
           <h6>Description:</h6>
           <p>{overview}</p>
           <div className="movie-buttons">
