@@ -12,7 +12,7 @@ import db from "../firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import "./CSS/EditAccount.css";
-import { Image, Button, Col, Row, Container, Grid } from "react-bootstrap";
+import { Image, Button, Col, Row, Container } from "react-bootstrap";
 import { ToastAlert } from "../Components/Toast/index";
 
 // https://www.encodedna.com/javascript/redirect-page-after-a-delay-using-javascript.htm#:~:text=Try%20it%20You%20can%20call%20the%20redirect_Page%20%28%29,delay%20is%20for%205000%20milliseconds%20or%205%20seconds.
@@ -48,8 +48,18 @@ const EditAccountPage = ({ user }) => {
   useEffect(() => {
     FetchData();
   }, []);
+  const changeImage = (e) => {
+    let file = e.target.files[0];
+    setPfp(URL.createObjectURL(file));
+    setImage(file);
+  };
   const uploadImage = () => {
     if (image == null) return;
+    // console.log(image == "");
+    // if (image == "") {
+    //   setFilePath("");
+    //   return;
+    // }
     const storage = getStorage();
     const imageRef = ref(storage, `${image.name}`);
     console.log(image.name);
@@ -60,6 +70,7 @@ const EditAccountPage = ({ user }) => {
       .then((url) => {
         // `url` is the download URL for 'images/stars.jpg'
         // This can be downloaded directly:
+        console.log(url);
         const xhr = new XMLHttpRequest();
         xhr.responseType = "blob";
         xhr.onload = (event) => {
@@ -149,10 +160,10 @@ const EditAccountPage = ({ user }) => {
                   className="col img-thumbnail"
                   src={pfp}
                   alt="pfp"
-                  onError={(event) => {
-                    event.target.src =
+                  onError={(e) => {
+                    e.target.src =
                       "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
-                    event.onerror = null;
+                    e.onerror = null;
                   }}
                 />
               </Col>
@@ -162,16 +173,17 @@ const EditAccountPage = ({ user }) => {
                     <input
                       className="file-bar"
                       type="file"
-                      onChange={(e) => {
-                        setImage(e.target.files[0]);
-                      }}
+                      onChange={changeImage}
                     />
                   </Col>
                   <Col>
                     <Button
                       variant="danger"
                       className="remove-pfp"
-                      onClick={editAccount}
+                      onClick={() => {
+                        setPfp("");
+                        setImage("");
+                      }}
                     >
                       Remove Picture
                     </Button>
