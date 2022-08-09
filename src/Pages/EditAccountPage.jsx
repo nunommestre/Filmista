@@ -54,12 +54,11 @@ const EditAccountPage = ({ user }) => {
     setImage(file);
   };
   const uploadImage = () => {
-    if (image == null) return;
-    // console.log(image == "");
-    // if (image == "") {
-    //   setFilePath("");
-    //   return;
-    // }
+    console.log(image == "");
+    if (image == "") {
+      setFilePath("");
+      return;
+    }
     const storage = getStorage();
     const imageRef = ref(storage, `${image.name}`);
     console.log(image.name);
