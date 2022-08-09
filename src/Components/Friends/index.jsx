@@ -84,8 +84,13 @@ const Friend = ({ username, name, bio, id, user, pfp }) => {
   return (
     <div className="friend-card">
       <img
-        src="https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1"
+        src={pfp}
         alt={name}
+        onError={(event) => {
+          event.target.src =
+            "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
+          event.onerror = null;
+        }}
       />
       <div className="bio">
         <h6>@{username}</h6>
