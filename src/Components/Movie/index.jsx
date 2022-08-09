@@ -72,6 +72,7 @@ export default MovieDisplay;
 const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
   const [rateStatus, setRateStatus] = useState(["movie-rank-hidden"]);
   const [rate, setRate] = useState("");
+  const [UIrate, setUIrate] = useState("");
   const [comment, setComment] = useState("");
   const [ratingID, setRatingID] = useState("");
   const rateMovie = async () => {
@@ -89,7 +90,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
         tmbd_rate: vote_average,
         poster: poster_path,
         tmbd_id: id,
-        ratings: [],
+        ratings: [""],
         id: "default"
       };
       const docRef = await addDoc(collectionRef, payload);
@@ -127,11 +128,13 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
       const quSnapshot = await getDocs(qu);
       quSnapshot.forEach((document) => {
         const userDocRef = doc(db, "Movies", document.id);
-        const UserPayload = { rating: arrayUnion(ratingID) };
+        const UserPayload = { ratings: arrayUnion(ratingID) };
         updateDoc(userDocRef, UserPayload).then(function () {
           ToastAlert("You rated" + title, "success");
         });
+        console.log(quSnapshot.docs[0].data().ratings[0])
         console.log("Check db :)");
+        // setUIrate(document.data().ratings)
         hideRateScreen();
       });
   };
@@ -146,7 +149,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
       <div className="overview">
           <h6>{"Title: " + title}</h6>
           <h6>Rating:  <span>{vote_average}</span></h6>
-          <h6>Your Rating:  <span>N/A</span></h6>
+          <h6>Your Rating:  <span>{UIrate}</span></h6>
           <h6>Description:</h6>
           <p>{overview}</p>
           <div className="movie-buttons">
