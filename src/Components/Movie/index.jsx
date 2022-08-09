@@ -74,6 +74,22 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
   const [rate, setRate] = useState("");
   const [comment, setComment] = useState("");
   const [ratingID, setRatingID] = useState("");
+  const [UIrate, setUIRate] = useState("");
+    const seeRate = async () => {
+    const q = query(
+      collection(db, "Ratings"),
+      where("movie_id", "==", id)
+      );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((document) => {
+      if (document.data().user_id == userID){
+        console.log("trying")
+        setUIRate(document.data().rate);
+      }
+    });
+  }
+  seeRate();
+
   const storeMovie = async () => {
     const q = query(
       collection(db, "Movies"),
@@ -117,6 +133,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
         comment: comment,
         user_id: userID,
         id: "default",
+        movie_id: id,
       };
       const rateRef = await addDoc(collectionRef, payload);
       updateDoc(rateRef, "id", rateRef.id);
@@ -145,8 +162,6 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
     storeMovie();
     linkRating();
   };
-
-
   const hideRateScreen = () => {
     setRateStatus("movie-rank-hidden");
   }
@@ -156,7 +171,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
       <div className="overview">
           <h6>{"Title: " + title}</h6>
           <h6>Rating:  <span>{vote_average}</span></h6>
-          <h6>Your Rating:  <span>{rate}</span></h6>
+          <h6>Your Rating:  <span>{UIrate}</span></h6>
           <h6>Description:</h6>
           <p>{overview}</p>
           <div className="movie-buttons">
