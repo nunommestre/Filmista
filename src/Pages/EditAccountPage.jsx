@@ -121,6 +121,9 @@ const EditAccountPage = ({ user }) => {
       <div className="edit-account-page">
         <div>
           <h1 className="ea-text">Edit Account: </h1>
+          <p>
+          <em>Double click update to save your changes!</em>
+        </p>
           <h3 className="ea-text">Name: </h3>
           <input
             className="ea-text name-bar"

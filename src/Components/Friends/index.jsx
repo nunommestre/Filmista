@@ -153,7 +153,7 @@ const removeFriend = async (id, user) => {
     const userDocRef = doc(db, "Users", document.id);
     const UserPayload = { following: arrayRemove(id) };
     updateDoc(userDocRef, UserPayload).then(function () {
-      ToastAlert("Successfully unfollowed!", "error");
+      ToastAlert("Successfully unfollowed", "success");
     });
     console.log("Check db :)");
     const docRef = doc(db, "Users", id);
