@@ -55,7 +55,7 @@ const SEARCH_API =
     <div className="explore-page">
         <div className="page-header">
         <h1>Welcome to the Explore Page</h1>
-        <p><em>Search for your favorite movies, rank them, share them to your favorite playlist, or click view more to see more information!</em></p>
+        <p><em>Search for your favorite movies, rank them, share them to your favorite playlist, or click view more to see more information! Movie rating may requires a double click if stalled.</em></p>
         <form onSubmit={formSubmission}>
         <input className="search-bar" type="text" placeholder="Search..." value={searchTerm} onChange={searchUpdate}/>
         </form>
@@ -88,7 +88,9 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
       }
     });
   }
-  seeRate();
+  useEffect(() => {
+    seeRate();
+});
 
   const storeMovie = async () => {
     const q = query(
@@ -148,12 +150,15 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
       const querySnapshot = await getDocs(q);
       // If there is already a user with this email do not write them again
     querySnapshot.forEach((document) => {
-      const userDocRef = doc(db, "Movies", document.id);
-      const UserPayload = { ratings: arrayUnion(ratingID) };
-      updateDoc(userDocRef, UserPayload).then(function () {
+      const movieDocRef = doc(db, "Movies", document.id);
+      const moviePayload = { ratings: arrayUnion(ratingID) };
+      updateDoc(movieDocRef, moviePayload).then(function () {
         ToastAlert("You rated" + title, "success");
         
       });
+      const userDocRef = doc(db, "Users", userID);
+      const UserPayload = { movies: arrayUnion(document.id) };
+      updateDoc(userDocRef, UserPayload)
       console.log("Check db :)");
       hideRateScreen();
     });

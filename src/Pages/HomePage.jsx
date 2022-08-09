@@ -23,9 +23,22 @@ const HomePage = ({ user, docID }) => {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [pfp, setPfp] = useState("");
+  const [id, setID] = useState("");
   const [following, setFollowing] = useState(0);
   const [followers, setFollowers] = useState(0);
   const [movieCount, setMovieCount] = useState(0);
+  let redirect_Page = (id) => {
+    let tID = setTimeout(function () {
+      window.location.href = "/viewFollowers?id=" + id;
+      window.clearTimeout(tID); // clear time out.
+    }, 1500);
+  };
+  let redirect_Page_Following = (id) => {
+    let tID = setTimeout(function () {
+      window.location.href = "/viewFollowing?id=" + id;
+      window.clearTimeout(tID); // clear time out.
+    }, 1500);
+  };
   const FetchData = async () => {
     const q = query(
       collection(db, "Users"),
@@ -37,6 +50,7 @@ const HomePage = ({ user, docID }) => {
       setUsername(document.data().username);
       setBio(document.data().bio);
       setPfp(document.data().pfp);
+      setID(document.data().id);
       setFollowers(document.data().followers.length);
       setFollowing(document.data().following.length);
       setMovieCount(document.data().movies.length);
@@ -75,11 +89,11 @@ const HomePage = ({ user, docID }) => {
           <h3>{movieCount}</h3>
         </div>
         <div className="col-sm-4 stat-section">
-          <h3>Followers</h3>
+          <a onClick={() => redirect_Page(id) }><h3>Followers</h3></a>
           <h3>{followers}</h3>
         </div>
         <div className="col-sm-4 stat-section">
-          <h3>Following</h3>
+        <a onClick={() => redirect_Page_Following(id) }><h3>Following</h3></a>
           <h3>{following}</h3>
         </div>
       </div>

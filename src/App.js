@@ -19,6 +19,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import NavBarSocialLinks from "./Components/NavBarLinks";
 // ----- Pages ----- //
 import { FriendContext } from "./friendContext";
+import FollowersPage from "./Pages/FollowersPage";
+import FollowingPage from "./Pages/FollowingPage";
 import EditAccountPage from "./Pages/EditAccountPage";
 import CreatePlaylistPage from "./Pages/CreatePlaylistPage";
 import FriendsPage from "./Pages/FriendsPage";
@@ -86,6 +88,12 @@ function App({ signOut, user }) {
       break;
     case "/viewFriend":
       component = <ViewFriendPage />;
+      break;
+    case "/viewFollowers":
+      component = <FollowersPage />;
+      break;
+    case "/viewFollowing":
+      component = <FollowingPage />;
       break;
     case "/explore":
       component = <ExplorePage user={user} />;
