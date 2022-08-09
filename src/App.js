@@ -34,7 +34,7 @@ import { Amplify, API, graphqlOperation } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
 import "@aws-amplify/ui-react/styles.css";
-
+import filmistaLogo from "./LogoImg/Filmista-logo.png";
 import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
 
@@ -112,11 +112,14 @@ function App({ signOut, user }) {
       >
         {/* NAVIGATION BAR - BRAND  */}
         <Navbar.Brand className="brand" href="/">
-          Filmista
+          <img
+            alt=""
+            src={filmistaLogo}
+            width="200"
+            height="50"
+            className="d-inline-block align-top"
+          />
         </Navbar.Brand>
-        <div>
-          <h1>Hello {user.attributes.name}</h1>
-        </div>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <NavBarSocialLinks logOut={signOut} register={registerUser} />
