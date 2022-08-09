@@ -98,6 +98,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID } ) => {
       // hideRateScreen();
     } else {
       console.log("Movie already exists in the db");
+      createRating();
     }
   }
   const createRating = async () => {
