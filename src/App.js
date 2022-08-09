@@ -32,16 +32,14 @@ import { Amplify, API, graphqlOperation } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
 import "@aws-amplify/ui-react/styles.css";
-import filmistaLogo from './LogoImg/Filmista-logo.png'
+import filmistaLogo from "./LogoImg/Filmista-logo.png";
 import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
-
 
 function App({ signOut, user }) {
   // ----- User Data ------ //
   const [userID, setUserID] = useState("");
   const registerUser = async () => {
- 
     const q = query(
       collection(db, "Users"),
       where("email", "==", user.attributes.email)
@@ -72,16 +70,7 @@ function App({ signOut, user }) {
     }
   };
   // ----- Properties ----- //
-
-  /**
-   * 
-   *     Component:
-   *     FriendsPage ---> Friend Display ----> Friend 
-   * 
-   * 
-   */
   let component;
-
   switch (window.location.pathname) {
     case "/":
       component = <HomePage user={user} docID={userID} />;
@@ -105,7 +94,6 @@ function App({ signOut, user }) {
   // ----- Return Statement ----- //
   return (
     <div>
-     
       <Navbar
         collapseOnSelect
         fixed="top"
@@ -116,13 +104,13 @@ function App({ signOut, user }) {
       >
         {/* NAVIGATION BAR - BRAND  */}
         <Navbar.Brand className="brand" href="/">
-        <img
-              alt=""
-              src={filmistaLogo}
-              width="200"
-              height="50"
-              className="d-inline-block align-top"
-            />
+          <img
+            alt=""
+            src={filmistaLogo}
+            width="200"
+            height="50"
+            className="d-inline-block align-top"
+          />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
