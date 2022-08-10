@@ -103,10 +103,11 @@ const Friend = ({ username, name, bio, id, user, pfp }) => {
             className="friend-button-left"
             onClick={() => removeFriend(id, user)}
           >
-            Remove
+            Unfollow
           </Button>
           <Button
-            variant="info"
+            id="rate-button"
+            variant="dark"
             className="friend-button-left"
             onClick={viewFriend}
           >
@@ -117,7 +118,7 @@ const Friend = ({ username, name, bio, id, user, pfp }) => {
             className="friend-button-left"
             onClick={() => addFriend(id, user)}
           >
-            Add
+            Follow
           </Button>
         </div>
       </div>

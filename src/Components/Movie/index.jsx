@@ -179,17 +179,14 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
         <p>{overview}</p>
         <div className="movie-buttons">
           <Button
-            variant="primary"
+            variant="dark"
             className="movie-button"
             onClick={() => setRateStatus("movie-rank")}
           >
             Rate Movie
           </Button>
-          <Button variant="primary" className="movie-button">
+          <Button variant="dark" className="movie-button">
             Add to Playlist
-          </Button>
-          <Button variant="warning" className="movie-button">
-            View More
           </Button>
         </div>
       </div>
