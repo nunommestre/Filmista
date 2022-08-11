@@ -5,19 +5,20 @@ import { faUserFriends, faHouse, faRankingStar, faPenToSquare, faCirclePlus} fro
 import { NavDropdown, Button } from "react-bootstrap";
 import friends from "../../LogoImg/friends.png";
 import explore from "../../LogoImg/explore.png";
+import account from "../../LogoImg/popcorn.png";
 import "./styles.css";
 const NavBarSocialLinks = ({logOut, register}) => {
     return (
       <Nav className="ms-auto links">
         <Nav.Link href="/explore">
           Explore 
-          <img src={explore} className="nav-icon" />
+          <img src={explore} className="nav-icons" />
         </Nav.Link>
         <Nav.Link href="/friends">
           Friends 
-          <img src={friends} className="nav-icon" />
+          <img src={friends} className="nav-icons" />
         </Nav.Link>
-        <NavDropdown title="Account">
+        <NavDropdown title="Account" className="down">
         <NavDropdown.Item href="/">
           Home 
           <FontAwesomeIcon icon={faHouse} className="nav-icon" />
