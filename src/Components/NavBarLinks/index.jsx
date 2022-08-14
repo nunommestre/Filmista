@@ -3,20 +3,22 @@ import Nav from "react-bootstrap/Nav";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserFriends, faHouse, faRankingStar, faPenToSquare, faCirclePlus} from "@fortawesome/free-solid-svg-icons";
 import { NavDropdown, Button } from "react-bootstrap";
+import friends from "../../LogoImg/friends.png";
+import explore from "../../LogoImg/explore.png";
+import account from "../../LogoImg/popcorn.png";
 import "./styles.css";
-
 const NavBarSocialLinks = ({logOut, register}) => {
     return (
       <Nav className="ms-auto links">
         <Nav.Link href="/explore">
           Explore 
-          <FontAwesomeIcon icon={faRankingStar} className="nav-icon" />
+          <img src={explore} className="nav-icons" />
         </Nav.Link>
         <Nav.Link href="/friends">
           Friends 
-          <FontAwesomeIcon icon={faUserFriends} className="nav-icon" />
+          <img src={friends} className="nav-icons" />
         </Nav.Link>
-        <NavDropdown title="Account">
+        <NavDropdown title="Account" className="down">
         <NavDropdown.Item href="/">
           Home 
           <FontAwesomeIcon icon={faHouse} className="nav-icon" />

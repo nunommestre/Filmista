@@ -85,7 +85,8 @@ import {
           <p>{bio}</p>
           <div className="friend-buttons">
           <Button
-            variant="info"
+          id="rate-button"
+            variant="dark"
             className="friend-button-left"
             onClick={viewFriend}
           >

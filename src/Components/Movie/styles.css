@@ -27,7 +27,7 @@
 }
 .overview {
   background-color: white;
-  color: blue;
+  color: #7500ce !important;
   display: inline;
   position: absolute;
   left: 0;
@@ -53,6 +53,7 @@ p {
 }
 .movie-button {
   margin-top: 1rem;
+  background-color: #7500ce !important;
   width: 8rem;
 }
 .page-header {

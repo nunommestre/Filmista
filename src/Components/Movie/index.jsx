@@ -11,6 +11,7 @@ import {
   doc,
   updateDoc,
   arrayUnion,
+  onSnapshot
 } from "firebase/firestore";
 import db from "../../firebase";
 
@@ -83,13 +84,27 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
   const [comment, setComment] = useState("");
   const [ratingID, setRatingID] = useState("");
   const [UIrate, setUIRate] = useState("");
+  const [currentRater, setCurrentRater] = useState("");
   const seeRate = async () => {
-    const q = query(collection(db, "Ratings"), where("movie_id", "==", id));
+    const q = query(collection(db, "Movies"), where("tmbd_id", "==", id));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((document) => {
-      if (document.data().user_id == userID) {
-        setUIRate(document.data().rate);
-      }
+    for(let i=0; i < document.data().ratings.length; ++i){
+      const q = query(
+        collection(db, "Ratings"),
+        where("id", "==", document.data().ratings[i])
+        );
+        onSnapshot(q, (snapshot) =>
+        setCurrentRater(
+            snapshot.docs.map((doc) => (doc.data().user_id)))
+        )
+        if(currentRater === userID){
+          onSnapshot(q, (snapshot) =>
+        setUIRate(
+            snapshot.docs.map((doc) => (doc.data().rate)))
+        )
+        }
+    }
     });
   };
   useEffect(() => {
@@ -148,7 +163,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
       const movieDocRef = doc(db, "Movies", document.id);
       const moviePayload = { ratings: arrayUnion(ratingID) };
       updateDoc(movieDocRef, moviePayload).then(function () {
-        ToastAlert("You rated" + title, "success");
+        ToastAlert("You rated: " + title, "success");
       });
       const userDocRef = doc(db, "Users", userID);
       const UserPayload = { movies: arrayUnion(document.id) };
@@ -179,17 +194,14 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
         <p>{overview}</p>
         <div className="movie-buttons">
           <Button
-            variant="primary"
+            variant="dark"
             className="movie-button"
             onClick={() => setRateStatus("movie-rank")}
           >
             Rate Movie
           </Button>
-          <Button variant="primary" className="movie-button">
+          <Button variant="dark" className="movie-button">
             Add to Playlist
-          </Button>
-          <Button variant="warning" className="movie-button">
-            View More
           </Button>
         </div>
       </div>
@@ -213,7 +225,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
         ></textarea>
         <div className="movie-buttons">
           <Button
-            variant="warning"
+            variant="danger"
             className="movie-button"
             onClick={rateMovie}
           >

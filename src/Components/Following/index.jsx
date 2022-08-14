@@ -35,16 +35,20 @@ import {
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((document) => {
+          const array_inside = [
+          ]
             for(let i = 0; i < document.data().following.length; ++i){     
                 const q = query(
                     collection(db, "Users"),
                     where("id", "==", document.data().following[i])
                     );
                     onSnapshot(q, (snapshot) =>
-                    setFriends(friends =>
+                    array_inside.push(
                         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
                     )
             }
+            // It's all here how do we store it???
+            console.log(array_inside)
         });
     };
         FetchData();
@@ -85,7 +89,8 @@ import {
           <p>{bio}</p>
           <div className="friend-buttons">
           <Button
-            variant="info"
+          id="rate-button"
+            variant="dark"
             className="friend-button-left"
             onClick={viewFriend}
           >

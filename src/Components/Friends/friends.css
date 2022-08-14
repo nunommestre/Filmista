@@ -1,7 +1,11 @@
 .friends-page {
   padding-top: 10rem;
-  background-color: rgb(73, 153, 206);
+  background-color: #7500ce !important;
+  color: rgb(255, 255, 255);
   min-height: 100vh;
+}
+.friends-header {
+  color: white !important;
 }
 .friend-card {
   width: 18rem;
@@ -25,7 +29,7 @@
 }
 .bio {
   background-color: white;
-  color: rgb(33, 70, 119);
+  color: #7500ce !important;
   padding-top: 300px;
   padding: 1rem;
 }
@@ -51,4 +55,7 @@ p {
 }
 .friends-search-bar::placeholder {
   color: white;
+}
+#rate-button {
+  background-color: #7500ce !important;
 }
