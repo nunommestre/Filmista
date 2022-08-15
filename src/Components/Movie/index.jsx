@@ -80,7 +80,6 @@ const MovieDisplay = (userID) => {
 export default MovieDisplay;
 const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
   const [rateStatus, setRateStatus] = useState(["movie-rank-hidden"]);
-  const [playlistStatus, setPlaylistStatus] = useState(["playlist-hidden"]);
   const [rate, setRate] = useState("");
   const [comment, setComment] = useState("");
   const [ratingID, setRatingID] = useState("");
@@ -89,30 +88,16 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
   const [playlists, setPlaylists] = useState([]);
 
   // It's not getting user ID easy fix
-  useEffect(() => {
-    const FetchData = async () => {
-      const q = query(
-        collection(db, "Users"),
-        where("id", "==", userID)
-        );
-        const querySnapshot = await getDocs(q);
-        console.log(userID)
-        console.log(querySnapshot.docs.length)   
-        querySnapshot.forEach((document) => {
-          for(let i = 0; i < document.data().playlists.length; ++i){  
-              const q = query(
-                  collection(db, "Playlists"),
-                  where("id", "==", document.data().playlists[i])
-                  );
-                  onSnapshot(q, (snapshot) =>
-                  setPlaylists(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-                  )
-                }
-              });
-            };
-            FetchData();
-            console.log(playlists);
-  }, []);
+  const showPlaylists = () => {
+    const q = query(
+      collection(db, "Playlists"),
+      where("user_id", "==", userID)
+      );
+      onSnapshot(q, (snapshot) =>
+      setPlaylists(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      )
+      console.log(playlists)
+    }
   const storeMovie = async () => {
     const q = query(collection(db, "Movies"), where("tmbd_id", "==", id));
     const querySnapshot = await getDocs(q);
@@ -165,8 +150,8 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
       hideRateScreen();
     }
   };
-
-
+  
+  
   const rateMovie = () => {
     storeMovie();
     createRating();
@@ -174,8 +159,22 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
   const hideRateScreen = () => {
     setRateStatus("movie-rank-hidden");
   };
-  return (
-    <div className="movie-card">
+  const PlaylistButton = ({name}) => {
+    const hidePlaylistScreen = () => {
+      setPlaylists([]);
+    };
+    return(
+      <Button
+      variant="danger"
+      className="movie-button"
+      onClick={hidePlaylistScreen}
+      >
+              {name}
+            </Button>
+  )
+};
+return (
+  <div className="movie-card">
       <img src={IMAGE_API + poster_path} alt={title} />
       <div className="overview">
         <h6>{"Title: " + title}</h6>
@@ -189,12 +188,15 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
             variant="dark"
             className="movie-button"
             onClick={() => setRateStatus("movie-rank")}
-          >
+            >
             Rate Movie
           </Button>
-          <Button variant="dark" className="movie-button" onClick={() => setPlaylistStatus("playlist")}>
+          <Button variant="dark" className="movie-button" onClick={showPlaylists}>
             Add to Playlist
           </Button>
+              {playlists.map((playlist) => (
+                <PlaylistButton key={playlist.id} {...playlist} />
+                ))}
         </div>
       </div>
       <div className={rateStatus}>
@@ -232,40 +234,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
           </Button>
         </div>
       </div>
-      <div className="playlist">
-        <div className="movie-buttons">
-        {/* {playlists.map((playlist) => (
-          <PlaylistButton key={playlist.id} {...playlist} />
-          ))} */}
-          <Button
-            variant="danger"
-            className="movie-button"
-            onClick={rateMovie}
-            >
-            Rate
-          </Button>
-          <Button
-            variant="danger"
-            className="movie-button"
-            onClick={hideRateScreen}
-            >
-            Back
-          </Button>
-        </div>
-      </div>
     </div>
   );
 };
 export { Movie };
-const PlaylistButton = ({ title }) => {
-  // const hidePlaylistScreen = () => {
-  //   setPlaylistStatus("playlist-hidden");
-  // };
-  <Button
-    variant="danger"
-    className="movie-button"
-    // onClick={hidePlaylistScreen}
-    >
-            {title}
-          </Button>
-}

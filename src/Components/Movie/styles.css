@@ -91,20 +91,9 @@ p {
   z-index: 2;
 }
 .playlist {
-  background-color: blue;
-  color: white;
-  display: inline;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  padding: 1rem;
-  padding-bottom: 200px;
-  overflow: hidden;
-  max-height: 100%;
-  transform: translateY(110%);
-  transition: transform 0.4s ease-in-out;
-  z-index: 3;
+  text-align: center;
+  margin: 0 auto;
+  width: 50%;
 }
 .playlist-hidden {
   height: 0px;
