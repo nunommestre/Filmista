@@ -7,7 +7,7 @@ import friends from "../../LogoImg/friends.png";
 import explore from "../../LogoImg/explore.png";
 import account from "../../LogoImg/popcorn.png";
 import "./styles.css";
-const NavBarSocialLinks = ({logOut, register}) => {
+const NavBarSocialLinks = ({logOut}) => {
     return (
       <Nav className="ms-auto links">
         <Nav.Link href="/explore">
@@ -23,7 +23,7 @@ const NavBarSocialLinks = ({logOut, register}) => {
           Home 
           <FontAwesomeIcon icon={faHouse} className="nav-icon" />
         </NavDropdown.Item>
-        <NavDropdown.Item onClick={register}>
+        <NavDropdown.Item href="/editAccount">
           Edit Account
           <FontAwesomeIcon icon={faPenToSquare} className="nav-icon" />
         </NavDropdown.Item>

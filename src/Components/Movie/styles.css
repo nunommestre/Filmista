@@ -90,6 +90,15 @@ p {
   transition: transform 0.4s ease-in-out;
   z-index: 2;
 }
+.playlist {
+  text-align: center;
+  margin: 0 auto;
+  width: 50%;
+}
+.playlist-hidden {
+  height: 0px;
+  visibility: hidden;
+}
 .movie-rank-hidden {
   height: 0px;
   visibility: hidden;

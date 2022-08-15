@@ -23,13 +23,14 @@ import {
     "https://api.themoviedb.org/3/movie/top_rated?api_key=3989b90b8172707d9d75a1196763d35c&page=1";
   const IMAGE_API = "https://image.tmdb.org/t/p/w500";
   
-  const FollowingDisplay = ({friendsArray}) => {
+  const FollowingDisplay = ({friendsArray, real_name}) => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const id = urlParams.get("id");
     return (
       <div className="friends-page">
         <div className="friends-header">
+        <h1>{real_name + "'s"}</h1>
           <h1>Following</h1>
         </div>
         <div className="friends-grid">

@@ -47,6 +47,7 @@ const EditAccountPage = ({ user }) => {
   };
   useEffect(() => {
     FetchData();
+    ToastAlert("We are currently experiencing issues with editing accounts. Be sure to tap the UPDATE button twice slowly, and wait to ensure you changes redirect you to the account page.", "info");
   }, []);
   const changeImage = (e) => {
     let file = e.target.files[0];
@@ -121,9 +122,6 @@ const EditAccountPage = ({ user }) => {
       <div className="edit-account-page">
         <div>
           <h1 className="ea-text">Edit Account: </h1>
-          <p>
-          <em>Double click update to save your changes!</em>
-        </p>
           <h3 className="ea-text">Name: </h3>
           <input
             className="ea-text name-bar"
@@ -189,6 +187,7 @@ const EditAccountPage = ({ user }) => {
                     >
                       Remove Picture
                     </Button>
+                    <p><em>Note if you do not chose a profile picture it will reset your picture to the default image.</em></p>
                   </Col>
                 </Container>
               </Col>

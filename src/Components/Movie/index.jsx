@@ -78,14 +78,26 @@ const MovieDisplay = (userID) => {
   );
 };
 export default MovieDisplay;
-const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
+const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
   const [rateStatus, setRateStatus] = useState(["movie-rank-hidden"]);
   const [rate, setRate] = useState("");
   const [comment, setComment] = useState("");
   const [ratingID, setRatingID] = useState("");
   const [UIrate, setUIRate] = useState("");
   const [currentRater, setCurrentRater] = useState("");
+  const [playlists, setPlaylists] = useState([]);
 
+  // It's not getting user ID easy fix
+  const showPlaylists = () => {
+    const q = query(
+      collection(db, "Playlists"),
+      where("user_id", "==", userID)
+      );
+      onSnapshot(q, (snapshot) =>
+      setPlaylists(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      )
+      console.log(playlists)
+    }
   const storeMovie = async () => {
     const q = query(collection(db, "Movies"), where("tmbd_id", "==", id));
     const querySnapshot = await getDocs(q);
@@ -114,7 +126,6 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
     const querySnapshot = await getDocs(q);
     // If there is already a user with this email do not write them again
     if (querySnapshot.docs.length == 0) {
-      ToastAlert(title + " has never been ranked so it is not in our database. Click Rate again to confirm your rating.", "warning");
       console.log("Movie not in db");
     } else {
       const collectionRef = collection(db, "Ratings");
@@ -138,8 +149,8 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
       hideRateScreen();
     }
   };
-
-
+  
+  
   const rateMovie = () => {
     storeMovie();
     createRating();
@@ -147,8 +158,52 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
   const hideRateScreen = () => {
     setRateStatus("movie-rank-hidden");
   };
-  return (
-    <div className="movie-card">
+  let hidePlaylists = () => {
+    let tID = setTimeout(function () {
+      setPlaylists([]);
+      window.clearTimeout(tID); // clear time out.
+    }, 500);
+  };
+  const PlaylistButton = ({name, id, movie_name, movie_id, movie_des, tmdb_rate, poster}) => {
+    const addToPlaylist = async () => {
+      const q = query(collection(db, "Movies"), where("tmbd_id", "==", movie_id));
+      const querySnapshot = await getDocs(q);
+      if(querySnapshot.docs.length == 0){
+        const collectionRef = collection(db, "Movies");
+      const payload = {
+        title: movie_name,
+        description: movie_des,
+        tmbd_rate: tmdb_rate,
+        poster: poster,
+        tmbd_id: movie_id,
+        ratings: [],
+        id: "default",
+      };
+      const docRef = await addDoc(collectionRef, payload);
+      updateDoc(docRef, "id", docRef.id);
+        ToastAlert(movie_name + " has never been ranked or added to a playlist so it is not in our database. Click the button again to confirm your action.", "warning");
+      } else{
+        const userDocRef = doc(db, "Playlists", id);
+        const UserPayload = { movies: arrayUnion(querySnapshot.docs[0].data().id) };
+        updateDoc(userDocRef, UserPayload).then(
+          ToastAlert("Successfuly added: " + movie_name + " to the playlist: " + name, "success")
+          )
+          hidePlaylists();
+          console.log("Check db :)");
+      }
+    };
+    return(
+      <Button
+      variant="danger"
+      className="movie-button"
+      onClick={addToPlaylist}
+      >
+              {name}
+            </Button>
+  )
+};
+return (
+  <div className="movie-card">
       <img src={IMAGE_API + poster_path} alt={title} />
       <div className="overview">
         <h6>{"Title: " + title}</h6>
@@ -162,12 +217,15 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
             variant="dark"
             className="movie-button"
             onClick={() => setRateStatus("movie-rank")}
-          >
+            >
             Rate Movie
           </Button>
-          <Button variant="dark" className="movie-button">
+          <Button variant="dark" className="movie-button" onClick={showPlaylists}>
             Add to Playlist
           </Button>
+              {playlists.map((playlist) => (
+                <PlaylistButton key={playlist.id} {...playlist} movie_name={title} movie_id={id} movie_des={overview} tmdb_rate={vote_average} poster={IMAGE_API + poster_path}/>
+                ))}
         </div>
       </div>
       <div className={rateStatus}>
@@ -178,7 +236,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
           defaultValue={rate}
           onChange={(e) => setRate(e.target.value)}
           placeholder="Rating..."
-        />
+          />
         <h6>Comment: </h6>
         <textarea
           rows="4"
@@ -187,20 +245,20 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
           defaultValue={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Comments..."
-        ></textarea>
+          ></textarea>
         <div className="movie-buttons">
           <Button
             variant="danger"
             className="movie-button"
             onClick={rateMovie}
-          >
+            >
             Rate
           </Button>
           <Button
             variant="danger"
             className="movie-button"
             onClick={hideRateScreen}
-          >
+            >
             Back
           </Button>
         </div>

@@ -19,6 +19,7 @@ const FollowingPage = () => {
   const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const id = urlParams.get("id");
+    const [real_name, setRealName] = useState("");
     const [friends, setFriends] = useState([])
       const array_inside = []
               useEffect(() => {
@@ -29,6 +30,7 @@ const FollowingPage = () => {
                   );
                   const querySnapshot = await getDocs(q);
                   querySnapshot.forEach((document) => {
+                    setRealName(document.data().name)  
                       for(let i = 0; i < document.data().following.length; ++i){     
                           const q = query(
                               collection(db, "Users"),
@@ -46,7 +48,7 @@ const FollowingPage = () => {
               }, []);
   return (
     <div>
-      <FollowingDisplay friendsArray={friends} />
+      <FollowingDisplay friendsArray={friends} real_name={real_name}/>
     </div>
   );
 };
