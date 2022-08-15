@@ -78,14 +78,41 @@ const MovieDisplay = (userID) => {
   );
 };
 export default MovieDisplay;
-const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
+const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
   const [rateStatus, setRateStatus] = useState(["movie-rank-hidden"]);
+  const [playlistStatus, setPlaylistStatus] = useState(["playlist-hidden"]);
   const [rate, setRate] = useState("");
   const [comment, setComment] = useState("");
   const [ratingID, setRatingID] = useState("");
   const [UIrate, setUIRate] = useState("");
   const [currentRater, setCurrentRater] = useState("");
+  const [playlists, setPlaylists] = useState([]);
 
+  // It's not getting user ID easy fix
+  useEffect(() => {
+    const FetchData = async () => {
+      const q = query(
+        collection(db, "Users"),
+        where("id", "==", userID)
+        );
+        const querySnapshot = await getDocs(q);
+        console.log(userID)
+        console.log(querySnapshot.docs.length)   
+        querySnapshot.forEach((document) => {
+          for(let i = 0; i < document.data().playlists.length; ++i){  
+              const q = query(
+                  collection(db, "Playlists"),
+                  where("id", "==", document.data().playlists[i])
+                  );
+                  onSnapshot(q, (snapshot) =>
+                  setPlaylists(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+                  )
+                }
+              });
+            };
+            FetchData();
+            console.log(playlists);
+  }, []);
   const storeMovie = async () => {
     const q = query(collection(db, "Movies"), where("tmbd_id", "==", id));
     const querySnapshot = await getDocs(q);
@@ -165,7 +192,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
           >
             Rate Movie
           </Button>
-          <Button variant="dark" className="movie-button">
+          <Button variant="dark" className="movie-button" onClick={() => setPlaylistStatus("playlist")}>
             Add to Playlist
           </Button>
         </div>
@@ -178,7 +205,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
           defaultValue={rate}
           onChange={(e) => setRate(e.target.value)}
           placeholder="Rating..."
-        />
+          />
         <h6>Comment: </h6>
         <textarea
           rows="4"
@@ -187,20 +214,41 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
           defaultValue={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Comments..."
-        ></textarea>
+          ></textarea>
         <div className="movie-buttons">
           <Button
             variant="danger"
             className="movie-button"
             onClick={rateMovie}
-          >
+            >
             Rate
           </Button>
           <Button
             variant="danger"
             className="movie-button"
             onClick={hideRateScreen}
-          >
+            >
+            Back
+          </Button>
+        </div>
+      </div>
+      <div className="playlist">
+        <div className="movie-buttons">
+        {/* {playlists.map((playlist) => (
+          <PlaylistButton key={playlist.id} {...playlist} />
+          ))} */}
+          <Button
+            variant="danger"
+            className="movie-button"
+            onClick={rateMovie}
+            >
+            Rate
+          </Button>
+          <Button
+            variant="danger"
+            className="movie-button"
+            onClick={hideRateScreen}
+            >
             Back
           </Button>
         </div>
@@ -209,3 +257,15 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
   );
 };
 export { Movie };
+const PlaylistButton = ({ title }) => {
+  // const hidePlaylistScreen = () => {
+  //   setPlaylistStatus("playlist-hidden");
+  // };
+  <Button
+    variant="danger"
+    className="movie-button"
+    // onClick={hidePlaylistScreen}
+    >
+            {title}
+          </Button>
+}

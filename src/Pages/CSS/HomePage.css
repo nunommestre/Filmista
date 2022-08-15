@@ -41,3 +41,8 @@
 .account-button {
   font-size: 1.75rem;
 }
+.center-button {
+  text-align: center;
+  margin: 0 auto;
+  width: 50%;
+}
