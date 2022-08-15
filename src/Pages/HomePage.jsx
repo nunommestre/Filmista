@@ -54,6 +54,7 @@ const HomePage = ({ user, docID }) => {
           where("email", "==", user.attributes.email)
         );
         const querySnapshot = await getDocs(q);
+        if(querySnapshot.docs.length != 0){
         querySnapshot.forEach((document) => {
           setName(document.data().name);
           setUsername(document.data().username);
@@ -65,6 +66,7 @@ const HomePage = ({ user, docID }) => {
           setMovieCount(document.data().movies.length);
           setRegistered(true);
         });
+      }
       };
       FetchUserDetails();
       const FetchData = async () => {
@@ -79,15 +81,51 @@ const HomePage = ({ user, docID }) => {
                     collection(db, "Playlists"),
                     where("id", "==", document.data().playlists[i])
                     );
+
                     onSnapshot(q, (snapshot) =>
                     setFriends((friends) => [...friends, {...snapshot.docs[0].data(), id: snapshot.docs[0].data().id }])
                     )
+
                     console.log(friends)
             }
         });
         };
         FetchData();
     }, []);
+    const Playlist = ({ name, bio, id, pfp }) => {
+      let redirect_Playlist = () => {
+        let tID = setTimeout(function () {
+          window.location.href = "/playlist?id=" + id;
+          window.clearTimeout(tID); // clear time out.
+        }, 1500);
+      };
+      return (
+        <div className="friend-card">
+          <img
+            src={pfp}
+            alt={name}
+            onError={(event) => {
+              event.target.src =
+                "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
+              event.onerror = null;
+            }}
+          />
+          <div className="bio">
+            <h6>{name}</h6>
+            <div className="friend-buttons">
+            <Button
+            id="rate-button"
+              variant="dark"
+              className="center-button"
+              onClick={redirect_Playlist}
+            >
+              View
+            </Button>
+          </div>
+          </div>
+        </div>
+      );
+    };
   return (
     <div className="home-page">
       <div className="home-header">
@@ -138,40 +176,3 @@ const HomePage = ({ user, docID }) => {
 };
 
 export default HomePage;
-const Playlist = ({ username, name, bio, id, pfp }) => {
-  const viewFriend = () => {
-    redirect_Page(id);
-  };
-  return (
-    <div className="friend-card">
-      <img
-        src={pfp}
-        alt={name}
-        onError={(event) => {
-          event.target.src =
-            "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
-          event.onerror = null;
-        }}
-      />
-      <div className="bio">
-        <h6>{name}</h6>
-        <div className="friend-buttons">
-        <Button
-        id="rate-button"
-          variant="dark"
-          className="center-button"
-          onClick={viewFriend}
-        >
-          View
-        </Button>
-      </div>
-      </div>
-    </div>
-  );
-};
-let redirect_Page = (id) => {
-  let tID = setTimeout(function () {
-    window.location.href = "/viewFriend?id=" + id;
-    window.clearTimeout(tID); // clear time out.
-  }, 1500);
-};

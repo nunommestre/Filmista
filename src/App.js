@@ -19,6 +19,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import NavBarSocialLinks from "./Components/NavBarLinks";
 // ----- Pages ----- //
 import { FriendContext } from "./friendContext";
+import PlaylistPage from "./Pages/PlaylistPage";
 import WatchedPage from "./Pages/WatchedPage";
 import FollowersPage from "./Pages/FollowersPage";
 import FollowingPage from "./Pages/FollowingPage";
@@ -42,36 +43,37 @@ Amplify.configure(awsExports);
 function App({ signOut, user }) {
   // ----- User Data ------ //
   const [userID, setUserID] = useState("");
-  const registerUser = async () => {
-    const q = query(
-      collection(db, "Users"),
-      where("email", "==", user.attributes.email)
-    );
-    const querySnapshot = await getDocs(q);
-    // If there is already a user with this email do not write them again
-    if (querySnapshot.docs.length == 0) {
-      const collectionRef = collection(db, "Users");
-      const payload = {
-        name: user.attributes.name,
-        email: user.attributes.email.toLowerCase(),
-        username: user.attributes.name.toLowerCase(),
-        id: "default",
-        pfp: "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1",
-        bio: "default",
-        followers: [],
-        following: [],
-        movies: [],
-        playlists: [],
-      };
-      const docRef = await addDoc(collectionRef, payload);
-      updateDoc(docRef, "id", docRef.id);
-      setUserID(docRef.id);
-      window.location.href = "/editAccount";
-    } else {
-      console.log("User already existsss ");
-      window.location.href = "/editAccount";
-    }
-  };
+  useEffect(() => {
+    const registerUser = async () => {
+      const q = query(
+        collection(db, "Users"),
+        where("email", "==", user.attributes.email)
+      );
+      const querySnapshot = await getDocs(q);
+      // If there is already a user with this email do not write them again
+      if (querySnapshot.docs.length == 0) {
+        const collectionRef = collection(db, "Users");
+        const payload = {
+          name: user.attributes.name,
+          email: user.attributes.email.toLowerCase(),
+          username: user.attributes.name.toLowerCase(),
+          id: "default",
+          pfp: "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1",
+          bio: "default",
+          followers: [],
+          following: [],
+          movies: [],
+          playlists: [],
+        };
+        const docRef = await addDoc(collectionRef, payload);
+        updateDoc(docRef, "id", docRef.id);
+        setUserID(docRef.id);
+      } else {
+        console.log("User already existsss ");
+      }
+    };
+    registerUser();
+  }, []);
   // ----- Properties ----- //
   let component;
   switch (window.location.pathname) {
@@ -99,6 +101,9 @@ function App({ signOut, user }) {
     case "/watchedMovies":
       component = <WatchedPage />;
       break;
+    case "/playlist":
+      component = <PlaylistPage />;
+      break;
     case "/explore":
       component = <ExplorePage user={user} />;
       break;
@@ -125,7 +130,7 @@ function App({ signOut, user }) {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <NavBarSocialLinks logOut={signOut} register={registerUser} />
+          <NavBarSocialLinks logOut={signOut} />
         </Navbar.Collapse>
       </Navbar>
       {component}
