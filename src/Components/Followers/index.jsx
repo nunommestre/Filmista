@@ -41,13 +41,14 @@ import {
                     where("id", "==", document.data().followers[i])
                     );
                     onSnapshot(q, (snapshot) =>
-                    setFriends(friends =>
-                        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+                    setFriends((friends) => [...friends, {...snapshot.docs[0].data(), id: snapshot.docs[0].data().id }])
                     )
             }
         });
     };
+    useEffect(() => {
         FetchData();
+    }, []);
 
     return (
       <div className="friends-page">

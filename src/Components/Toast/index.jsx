@@ -25,21 +25,21 @@ export const ToastAlert = (message, type) => {
       theme: "colored",
     });
   } else if (type == "error") {
-    toast.error(CustomNotification("Error... 🙈", message), {
+    toast.error(CustomNotification("Error!", message), {
       position: toast.POSITION.TOP_CENTER,
       autoClose: false,
       transition: Bounce,
       theme: "colored",
     });
   } else if (type == "info") {
-    toast.info(CustomNotification("Attention Explorer! 🐸", message), {
+    toast.info(CustomNotification("Attention!", message), {
       position: toast.POSITION.TOP_CENTER,
       autoClose: false,
       transition: Bounce,
       theme: "colored",
     });
   } else if (type == "warning") {
-    toast.warning(CustomNotification("Careful Explorer... 🦎", message), {
+    toast.warning(CustomNotification("Don't worry!", message), {
       position: toast.POSITION.TOP_CENTER,
       autoClose: false,
       transition: Bounce,
