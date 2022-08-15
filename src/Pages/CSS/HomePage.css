@@ -38,3 +38,6 @@
   flex-wrap: wrap;
   background-color: black;
 }
+.account-button {
+  font-size: 1.75rem;
+}

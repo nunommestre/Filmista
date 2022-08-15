@@ -12,7 +12,7 @@ import db from "../firebase";
 import React, { useEffect, useState } from "react";
 import { Movie } from "../Components/Movie";
 import "./CSS/HomePage.css";
-import { Image } from "react-bootstrap";
+import { Image, Button } from "react-bootstrap";
 import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
@@ -36,6 +36,12 @@ const HomePage = ({ user, docID }) => {
   let redirect_Page_Following = (id) => {
     let tID = setTimeout(function () {
       window.location.href = "/viewFollowing?id=" + id;
+      window.clearTimeout(tID); // clear time out.
+    }, 1500);
+  };
+  let redirect_Page_Movies = (id) => {
+    let tID = setTimeout(function () {
+      window.location.href = "/watchedMovies?id=" + id;
       window.clearTimeout(tID); // clear time out.
     }, 1500);
   };
@@ -85,15 +91,15 @@ const HomePage = ({ user, docID }) => {
       </div>
       <div className="row stats-bar">
         <div className="col-sm-4 stat-section">
-          <h3>Movies Watched</h3>
+        <Button variant="dark" className="account-button" onClick={() => redirect_Page_Movies(id) }>Movies Watched</Button>
           <h3>{movieCount}</h3>
         </div>
         <div className="col-sm-4 stat-section">
-          <a onClick={() => redirect_Page(id) }><h3>Followers</h3></a>
+          <Button variant="dark" className="account-button" onClick={() => redirect_Page(id) }>Followers</Button>
           <h3>{followers}</h3>
         </div>
         <div className="col-sm-4 stat-section">
-        <a onClick={() => redirect_Page_Following(id) }><h3>Following</h3></a>
+        <Button variant="dark" className="account-button" onClick={() => redirect_Page_Following(id) }>Following</Button>
           <h3>{following}</h3>
         </div>
       </div>

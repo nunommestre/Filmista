@@ -12,7 +12,6 @@ import {
   import React, { useContext, useEffect, useState } from "react";
   import db from "../../firebase";
   import Button from "react-bootstrap/Button";
-  import useAsyncEffect from "use-async-effect";
   import "../Friends/friends.css";
   import { ToastAlert } from "../Toast";
   
@@ -23,33 +22,54 @@ import {
     "https://api.themoviedb.org/3/movie/top_rated?api_key=3989b90b8172707d9d75a1196763d35c&page=1";
   const IMAGE_API = "https://image.tmdb.org/t/p/w500";
   
-  const FollowingDisplay = ({friendsArray}) => {
+  const WatchedDisplay = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const id = urlParams.get("id");
+    const [idArray, setIDArray] = useState([{ id: "initial"}, ]);
+    const [friends, setFriends] = useState([]);
+    const FetchData = async () => {
+        const q = query(
+          collection(db, "Users"),
+          where("id", "==", id)
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((document) => {
+            for(let i = 0; i < document.data().movies.length; ++i){     
+                const q = query(
+                    collection(db, "Ratings"),
+                    where("movie_id", "==", document.data().movies[i]), where("user_id", "==", id)
+                    );
+                    onSnapshot(q, (snapshot) =>
+                    setFriends((friends) => [...friends, {...snapshot.docs[0].data(), id: snapshot.docs[0].data().id }])
+                    )
+            }
+        });
+    };
+    useEffect(() => {
+        FetchData();
+    }, []);
+
     return (
       <div className="friends-page">
         <div className="friends-header">
-          <h1>Following</h1>
+          <h1>Movies Watched</h1>
         </div>
         <div className="friends-grid">
-          {friendsArray.map((friend) => (
-            <Friend key={friend.id} {...friend} />
+          {friends.map((friend) => (
+            <Movie key={friend.id} {...friend} />
           ))}
         </div>
       </div>
     );
   };
-  export default FollowingDisplay;
-  const Friend = ({ username, name, bio, id, pfp }) => {
-    const viewFriend = () => {
-      redirect_Page(id);
-    };
+  export default WatchedDisplay;
+  const Movie = ({ rate, title, comment, id, cover }) => {
     return (
       <div className="friend-card">
         <img
-          src={pfp}
-          alt={name}
+          src={cover}
+          alt={"no cover picture"}
           onError={(event) => {
             event.target.src =
               "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
@@ -57,27 +77,19 @@ import {
           }}
         />
         <div className="bio">
-          <h6>@{username}</h6>
-          <h6>{name}</h6>
-          <h6>Bio: </h6>
-          <p>{bio}</p>
+          <h6>{title}</h6>
+          <h6> Rating: <span>{rate}</span></h6>
+          <h6>Comment: </h6>
+          <p>{comment}</p>
           <div className="friend-buttons">
-          <Button
-          id="rate-button"
-            variant="dark"
-            className="friend-button-left"
-            onClick={viewFriend}
-          >
-            View
-          </Button>
         </div>
         </div>
       </div>
     );
   };
-  let redirect_Page = (id) => {
+  let redirect_Page = () => {
     let tID = setTimeout(function () {
-      window.location.href = "/viewFriend?id=" + id;
+      window.location.href = "/explore";
       window.clearTimeout(tID); // clear time out.
     }, 1500);
   };
