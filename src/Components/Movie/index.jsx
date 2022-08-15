@@ -126,7 +126,6 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
     const querySnapshot = await getDocs(q);
     // If there is already a user with this email do not write them again
     if (querySnapshot.docs.length == 0) {
-      ToastAlert(title + " has never been ranked so it is not in our database. Click Rate again to confirm your rating.", "warning");
       console.log("Movie not in db");
     } else {
       const collectionRef = collection(db, "Ratings");
@@ -159,15 +158,45 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
   const hideRateScreen = () => {
     setRateStatus("movie-rank-hidden");
   };
-  const PlaylistButton = ({name}) => {
-    const hidePlaylistScreen = () => {
+  let hidePlaylists = () => {
+    let tID = setTimeout(function () {
       setPlaylists([]);
+      window.clearTimeout(tID); // clear time out.
+    }, 500);
+  };
+  const PlaylistButton = ({name, id, movie_name, movie_id, movie_des, tmdb_rate, poster}) => {
+    const addToPlaylist = async () => {
+      const q = query(collection(db, "Movies"), where("tmbd_id", "==", movie_id));
+      const querySnapshot = await getDocs(q);
+      if(querySnapshot.docs.length == 0){
+        const collectionRef = collection(db, "Movies");
+      const payload = {
+        title: movie_name,
+        description: movie_des,
+        tmbd_rate: tmdb_rate,
+        poster: poster,
+        tmbd_id: movie_id,
+        ratings: [],
+        id: "default",
+      };
+      const docRef = await addDoc(collectionRef, payload);
+      updateDoc(docRef, "id", docRef.id);
+        ToastAlert(movie_name + " has never been ranked or added to a playlist so it is not in our database. Click the button again to confirm your action.", "warning");
+      } else{
+        const userDocRef = doc(db, "Playlists", id);
+        const UserPayload = { movies: arrayUnion(querySnapshot.docs[0].data().id) };
+        updateDoc(userDocRef, UserPayload).then(
+          ToastAlert("Successfuly added: " + movie_name + " to the playlist: " + name, "success")
+          )
+          hidePlaylists();
+          console.log("Check db :)");
+      }
     };
     return(
       <Button
       variant="danger"
       className="movie-button"
-      onClick={hidePlaylistScreen}
+      onClick={addToPlaylist}
       >
               {name}
             </Button>
@@ -195,7 +224,7 @@ return (
             Add to Playlist
           </Button>
               {playlists.map((playlist) => (
-                <PlaylistButton key={playlist.id} {...playlist} />
+                <PlaylistButton key={playlist.id} {...playlist} movie_name={title} movie_id={id} movie_des={overview} tmdb_rate={vote_average} poster={IMAGE_API + poster_path}/>
                 ))}
         </div>
       </div>

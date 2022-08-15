@@ -83,6 +83,7 @@ const CreatePlaylistPage = ({user}) => {
         name: real_name,
         id: "default",
         pfp: filePath,
+        user_id: querySnapshot.docs[0].data().id,
         movies: []
       };
       const docRef = await addDoc(collectionRef, payload);

@@ -30,11 +30,21 @@ const FriendsDisplay = ({ user }) => {
     { name: "Loading...", id: "initial" },
   ]);
   const [searchTerm, setSearch] = useState([]);
+
+  const FetchData = async () => {
+    const q = query(
+      collection(db, "Users"),
+      where("email", "!=", user.attributes.email.toLowerCase())
+    );
+      onSnapshot(q, (snapshot) =>
+      setFriends(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      )
+};
   useEffect(
-    () =>
-      onSnapshot(collection(db, "Users"), (snapshot) =>
-        setFriends(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      ),
+    
+    () => {
+      FetchData();
+    },
     []
   );
   const formSubmission = async (e) => {
