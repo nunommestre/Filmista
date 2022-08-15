@@ -32,6 +32,10 @@ const CreatePlaylistPage = ({user}) => {
   const [filePath, setFilePath] = useState();
   const [pfp, setPfp] = useState();
 
+  useEffect(() => {
+    ToastAlert("We are currently experiencing issues with creating playlists. Be sure to tap the CREATE button twice slowly, and wait to ensure you changes redirect you to the account page.", "info");
+  },[]);
+
   const changeImage = (e) => {
     let file = e.target.files[0];
     setPfp(URL.createObjectURL(file));

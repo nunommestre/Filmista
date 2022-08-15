@@ -7,10 +7,10 @@ import {
   getId,
   updateDoc,
   doc,
+  onSnapshot
 } from "firebase/firestore";
 import db from "../firebase";
 import React, { useEffect, useState } from "react";
-import { Movie } from "../Components/Movie";
 import "./CSS/HomePage.css";
 import { Image, Button } from "react-bootstrap";
 import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
@@ -26,6 +26,7 @@ const ViewFriendPage = () => {
   const [following, setFollowing] = useState(0);
   const [followers, setFollowers] = useState(0);
   const [movieCount, setMovieCount] = useState(0);
+  const [friends, setFriends] = useState([]);
   let redirect_Page = (id) => {
     let tID = setTimeout(function () {
       window.location.href = "/viewFollowers?id=" + id;
@@ -44,26 +45,87 @@ const ViewFriendPage = () => {
       window.clearTimeout(tID); // clear time out.
     }, 1500);
   };
-  const FetchData = async () => {
+  useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const id = urlParams.get("id");
-    console.log(id);
-    const q = query(collection(db, "Users"), where("id", "==", id));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((document) => {
-      setName(document.data().name);
-      setUsername(document.data().username);
-      setBio(document.data().bio);
-      setPfp(document.data().pfp);
-      setID(document.data().id);
-      setFollowers(document.data().followers.length);
-      setFollowing(document.data().following.length);
-      setMovieCount(document.data().movies.length);
-      console.log(document.data().id);
-    });
+    const FetchUserDetails = async () => {
+      const q = query(
+        collection(db, "Users"),
+        where("id", "==", id)
+      );
+      const querySnapshot = await getDocs(q);
+      if(querySnapshot.docs.length != 0){
+      querySnapshot.forEach((document) => {
+        setName(document.data().name);
+        setUsername(document.data().username);
+        setBio(document.data().bio);
+        setPfp(document.data().pfp);
+        setID(document.data().id);
+        setFollowers(document.data().followers.length);
+        setFollowing(document.data().following.length);
+        setMovieCount(document.data().movies.length);
+      });
+    }
+    };
+    FetchUserDetails();
+    const FetchData = async () => {
+      const q = query(
+        collection(db, "Users"),
+        where("id", "==", id)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((document) => {
+          for(let i = 0; i < document.data().playlists.length; ++i){     
+              const q = query(
+                  collection(db, "Playlists"),
+                  where("id", "==", document.data().playlists[i])
+                  );
+
+                  onSnapshot(q, (snapshot) =>
+                  setFriends((friends) => [...friends, {...snapshot.docs[0].data(), id: snapshot.docs[0].data().id }])
+                  )
+
+                  console.log(friends)
+          }
+      });
+      };
+      FetchData();
+  }, []);
+  const Playlist = ({ name, bio, id, pfp }) => {
+    let redirect_Playlist = () => {
+      let tID = setTimeout(function () {
+        window.location.href = "/playlist?id=" + id;
+        window.clearTimeout(tID); // clear time out.
+      }, 1500);
+    };
+    return (
+      <div className="friend-card">
+        <img
+          src={pfp}
+          alt={name}
+          onError={(event) => {
+            event.target.src =
+              "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
+            event.onerror = null;
+          }}
+        />
+        <div className="bio">
+          <h6>{name}</h6>
+          <div className="friend-buttons">
+          <Button
+          id="rate-button"
+            variant="dark"
+            className="center-button"
+            onClick={redirect_Playlist}
+          >
+            View
+          </Button>
+        </div>
+        </div>
+      </div>
+    );
   };
-  FetchData();
   return (
     <div className="home-page">
       <div className="home-header">
@@ -99,10 +161,9 @@ const ViewFriendPage = () => {
       </div>
       <h3>Playlists</h3>
       <div className="playlist-grid">
-        <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-        <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-        <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
-        <Movie poster_path="/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" />
+      {friends.map((friend) => (
+            <Playlist key={friend.id} {...friend} />
+          ))}
       </div>
     </div>
   );

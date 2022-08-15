@@ -28,6 +28,7 @@ import {
     const id = urlParams.get("id");
     const [idArray, setIDArray] = useState([{ id: "initial"}, ]);
     const [friends, setFriends] = useState([]);
+    const [real_name, setRealName] = useState("");
     const FetchData = async () => {
         const q = query(
           collection(db, "Users"),
@@ -35,7 +36,8 @@ import {
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((document) => {
-            for(let i = 0; i < document.data().followers.length; ++i){     
+          setRealName(document.data().name)  
+            for(let i = 0; i < document.data().followers.length; ++i){   
                 const q = query(
                     collection(db, "Users"),
                     where("id", "==", document.data().followers[i])
@@ -53,6 +55,7 @@ import {
     return (
       <div className="friends-page">
         <div className="friends-header">
+        <h1>{real_name + "'s"}</h1>
           <h1>Followers</h1>
         </div>
         <div className="friends-grid">
