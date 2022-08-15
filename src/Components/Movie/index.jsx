@@ -11,7 +11,8 @@ import {
   doc,
   updateDoc,
   arrayUnion,
-  onSnapshot
+  onSnapshot,
+  serverTimestamp
 } from "firebase/firestore";
 import db from "../../firebase";
 
@@ -55,8 +56,7 @@ const MovieDisplay = (userID) => {
         <p>
           <em>
             Search for your favorite movies, rank them, share them to your
-            favorite playlist, or click view more to see more information! Movie
-            rating may requires a double click if stalled.
+            favorite playlist, or click view more to see more information!
           </em>
         </p>
         <form onSubmit={formSubmission}>
@@ -136,6 +136,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
         id: "default",
         movie_id: querySnapshot.docs[0].data().id,
         cover: IMAGE_API + poster_path,
+        timestamp: serverTimestamp(),
         title: title
       };
       const rateRef = await addDoc(collectionRef, payload);
@@ -144,7 +145,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
       const userDocRef = doc(db, "Users", userID);
       const UserPayload = { movies: arrayUnion(querySnapshot.docs[0].data().id) };
       updateDoc(userDocRef, UserPayload);
-      ToastAlert("Successfuly rated: " + title, "success");
+      ToastAlert("Successfuly rated: " + title + ". You can view ratings by tapping on your \"Movies Watched\" section in your account.", "success");
       console.log("Check db :)");
       hideRateScreen();
     }

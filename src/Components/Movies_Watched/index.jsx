@@ -4,6 +4,7 @@ import {
     query,
     where,
     getDocs,
+    orderBy,
     doc,
     updateDoc,
     arrayUnion,
@@ -40,7 +41,7 @@ import {
             for(let i = 0; i < document.data().movies.length; ++i){     
                 const q = query(
                     collection(db, "Ratings"),
-                    where("movie_id", "==", document.data().movies[i]), where("user_id", "==", id)
+                    where("movie_id", "==", document.data().movies[i]), where("user_id", "==", id), orderBy("timestamp", "desc")
                     );
                     onSnapshot(q, (snapshot) =>
                     setFriends((friends) => [...friends, {...snapshot.docs[0].data(), id: snapshot.docs[0].data().id }])
