@@ -12,6 +12,8 @@ import {
   import React, { useContext, useEffect, useState } from "react";
   import db from "../../firebase";
   import Button from "react-bootstrap/Button";
+  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown} from "@fortawesome/free-solid-svg-icons";
   import "../Friends/friends.css";
   import { ToastAlert } from "../Toast";
   
@@ -39,11 +41,7 @@ import {
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((document) => {
-            const qu = query(
-              collection(db, "Users"),
-              where("id", "==", document.data().user_id)
-            );
-            onSnapshot(qu, (snapshot) => setRealName(snapshot.docs[0].username))
+            setUserID(document.data().user_id)
             setPlaylistName(document.data().name);
             for(let i = 0; i < document.data().movies.length; ++i){     
                 const q = query(
@@ -56,6 +54,14 @@ import {
             }
       });
     };
+    const getData = () => {
+      const qu = query(
+        collection(db, "Users"),
+        where("id", "==", userID)
+      );
+      onSnapshot(qu, (snapshot) =>
+      setRealName("author: " + snapshot.docs[0].data().name))
+    }
     useEffect(() => {
         FetchData();
     }, []);
@@ -63,8 +69,8 @@ import {
     return (
       <div className="friends-page">
         <div className="friends-header">
-          <h1>{playlist_name}</h1>
-          <h1>{"made by: " + real_name}</h1>
+          <h1>{playlist_name} <FontAwesomeIcon icon={faChevronDown} onClick={getData} className="nav-icon" /></h1>
+          <h1>{real_name}</h1>
         </div>
         <div className="friends-grid">
           {friends.map((friend) => (
