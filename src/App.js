@@ -58,7 +58,7 @@ function App({ signOut, user }) {
           email: user.attributes.email.toLowerCase(),
           username: user.attributes.name.toLowerCase(),
           id: "default",
-          pfp: "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1",
+          pfp: "default",
           bio: "default",
           followers: [],
           following: [],

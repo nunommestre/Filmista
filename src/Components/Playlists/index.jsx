@@ -29,6 +29,9 @@ import {
     const [idArray, setIDArray] = useState([{ id: "initial"}, ]);
     const [playlist_name, setPlaylistName] = useState("");
     const [friends, setFriends] = useState([]);
+    const [userID, setUserID] = useState("");
+    const [real_name, setRealName] = useState("");
+
     const FetchData = async () => {
         const q = query(
           collection(db, "Playlists"),
@@ -36,6 +39,11 @@ import {
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((document) => {
+            const qu = query(
+              collection(db, "Users"),
+              where("id", "==", document.data().user_id)
+            );
+            onSnapshot(qu, (snapshot) => setRealName(snapshot.docs[0].username))
             setPlaylistName(document.data().name);
             for(let i = 0; i < document.data().movies.length; ++i){     
                 const q = query(
@@ -46,7 +54,7 @@ import {
                     setFriends((friends) => [...friends, {...snapshot.docs[0].data(), id: snapshot.docs[0].data().id }])
                     )
             }
-        });
+      });
     };
     useEffect(() => {
         FetchData();
@@ -56,6 +64,7 @@ import {
       <div className="friends-page">
         <div className="friends-header">
           <h1>{playlist_name}</h1>
+          <h1>{"made by: " + real_name}</h1>
         </div>
         <div className="friends-grid">
           {friends.map((friend) => (
