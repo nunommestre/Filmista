@@ -162,7 +162,7 @@ const EditAccountPage = ({ user }) => {
                   alt="pfp"
                   onError={(e) => {
                     e.target.src =
-                      "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
+                    "https://firebasestorage.googleapis.com/v0/b/filmista.appspot.com/o/user.png?alt=media&token=4aeb2856-a05a-42ed-baf1-d6006e776030";
                     e.onerror = null;
                   }}
                 />

@@ -6,6 +6,9 @@
   padding-left: 15px;
   height: 5rem;
 }
+.nav-icon:hover {
+  height: 2.5rem;
+}
 .links {
   padding-right: 150px;
 }
@@ -14,4 +17,7 @@ body {
 }
 .down {
   margin-top: 1rem;
+}
+.nav-text {
+  color: #701da8;
 }

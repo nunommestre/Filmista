@@ -104,10 +104,10 @@ const HomePage = ({ user, docID }) => {
           <img
             src={pfp}
             alt={name}
-            onError={(event) => {
-              event.target.src =
-                "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
-              event.onerror = null;
+            onError={(e) => {
+              e.target.src =
+              "https://firebasestorage.googleapis.com/v0/b/filmista.appspot.com/o/movieeeeeeee.png?alt=media&token=b692fae8-702b-4f6c-925a-cc391dde2cd1";
+              e.onerror = null;
             }}
           />
           <div className="bio">
@@ -135,7 +135,7 @@ const HomePage = ({ user, docID }) => {
           alt="pfp"
           onError={(event) => {
             event.target.src =
-              "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
+            "https://firebasestorage.googleapis.com/v0/b/filmista.appspot.com/o/user.png?alt=media&token=4aeb2856-a05a-42ed-baf1-d6006e776030";
             event.onerror = null;
           }}
         />

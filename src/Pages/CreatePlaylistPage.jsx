@@ -33,6 +33,8 @@ const CreatePlaylistPage = ({user}) => {
   const [pfp, setPfp] = useState();
 
   useEffect(() => {
+    setPfp("");
+    setImage("");
     ToastAlert("We are currently experiencing issues with creating playlists. Be sure to tap the CREATE button twice slowly, and wait to ensure you changes redirect you to the account page.", "info");
   },[]);
 
@@ -115,15 +117,14 @@ const CreatePlaylistPage = ({user}) => {
   <Container className="g-0 p-0 m-0">
             <Row md={6}>
               <Col>
-                <Image
+                <img
                   width={200}
                   height={200}
                   className="col img-thumbnail"
                   src={pfp}
                   alt="pfp"
                   onError={(e) => {
-                    e.target.src =
-                      "https://i1.wp.com/suiteplugins.com/wp-content/uploads/2019/10/blank-avatar.jpg?ssl=1";
+                    e.target.src = "https://firebasestorage.googleapis.com/v0/b/filmista.appspot.com/o/movieeeeeeee.png?alt=media&token=b692fae8-702b-4f6c-925a-cc391dde2cd1";
                     e.onerror = null;
                   }}
                 />

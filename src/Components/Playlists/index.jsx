@@ -12,6 +12,8 @@ import {
   import React, { useContext, useEffect, useState } from "react";
   import db from "../../firebase";
   import Button from "react-bootstrap/Button";
+  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown} from "@fortawesome/free-solid-svg-icons";
   import "../Friends/friends.css";
   import { ToastAlert } from "../Toast";
   
@@ -29,6 +31,9 @@ import {
     const [idArray, setIDArray] = useState([{ id: "initial"}, ]);
     const [playlist_name, setPlaylistName] = useState("");
     const [friends, setFriends] = useState([]);
+    const [userID, setUserID] = useState("");
+    const [real_name, setRealName] = useState("");
+
     const FetchData = async () => {
         const q = query(
           collection(db, "Playlists"),
@@ -36,6 +41,7 @@ import {
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((document) => {
+            setUserID(document.data().user_id)
             setPlaylistName(document.data().name);
             for(let i = 0; i < document.data().movies.length; ++i){     
                 const q = query(
@@ -46,8 +52,16 @@ import {
                     setFriends((friends) => [...friends, {...snapshot.docs[0].data(), id: snapshot.docs[0].data().id }])
                     )
             }
-        });
+      });
     };
+    const getData = () => {
+      const qu = query(
+        collection(db, "Users"),
+        where("id", "==", userID)
+      );
+      onSnapshot(qu, (snapshot) =>
+      setRealName("author: " + snapshot.docs[0].data().name))
+    }
     useEffect(() => {
         FetchData();
     }, []);
@@ -55,7 +69,8 @@ import {
     return (
       <div className="friends-page">
         <div className="friends-header">
-          <h1>{playlist_name}</h1>
+          <h1>{playlist_name} <FontAwesomeIcon icon={faChevronDown} onClick={getData} className="nav-icon" /></h1>
+          <h1>{real_name}</h1>
         </div>
         <div className="friends-grid">
           {friends.map((friend) => (

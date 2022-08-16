@@ -9,25 +9,25 @@ import account from "../../LogoImg/popcorn.png";
 import "./styles.css";
 const NavBarSocialLinks = ({logOut}) => {
     return (
-      <Nav className="ms-auto links">
-        <Nav.Link href="/explore">
+      <Nav className="ms-auto links nav-text">
+        <Nav.Link href="/explore" className="nav-text">
           Explore 
           <img src={explore} className="nav-icons" />
         </Nav.Link>
-        <Nav.Link href="/friends">
+        <Nav.Link href="/friends" className="nav-text">
           Friends 
           <img src={friends} className="nav-icons" />
         </Nav.Link>
-        <NavDropdown title="Account" className="down">
-        <NavDropdown.Item href="/">
+        <NavDropdown title="Account" className="down nav-text">
+        <NavDropdown.Item href="/" className="nav-text">
           Home 
           <FontAwesomeIcon icon={faHouse} className="nav-icon" />
         </NavDropdown.Item>
-        <NavDropdown.Item href="/editAccount">
+        <NavDropdown.Item href="/editAccount" className="nav-text">
           Edit Account
           <FontAwesomeIcon icon={faPenToSquare} className="nav-icon" />
         </NavDropdown.Item>
-        <NavDropdown.Item href="/createPlaylist">
+        <NavDropdown.Item href="/createPlaylist" className="nav-text">
           Create Playlist
           <FontAwesomeIcon icon={faCirclePlus} className="nav-icon" />
         </NavDropdown.Item>

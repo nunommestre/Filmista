@@ -15,7 +15,6 @@ import {
   serverTimestamp
 } from "firebase/firestore";
 import db from "../../firebase";
-
 import React, { useEffect, useState } from "react";
 import { ToastAlert } from "../Toast";
 import Button from "react-bootstrap/Button";
@@ -205,7 +204,11 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID}) => {
 };
 return (
   <div className="movie-card">
-      <img src={IMAGE_API + poster_path} alt={title} />
+      <img src={IMAGE_API + poster_path} alt={title} onError={(e) => {
+                    e.target.src =
+                    "https://firebasestorage.googleapis.com/v0/b/filmista.appspot.com/o/movieeeeeeee.png?alt=media&token=b692fae8-702b-4f6c-925a-cc391dde2cd1";
+                    e.onerror = null;
+                  }}/>
       <div className="overview">
         <h6>{"Title: " + title}</h6>
         <h6>
@@ -249,14 +252,14 @@ return (
           ></textarea>
         <div className="movie-buttons">
           <Button
-            variant="danger"
+            variant="dark"
             className="movie-button"
             onClick={rateMovie}
             >
             Rate
           </Button>
           <Button
-            variant="danger"
+            variant="dark"
             className="movie-button"
             onClick={hideRateScreen}
             >
