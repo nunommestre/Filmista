@@ -1,1 +1,3 @@
-# 🎥 Welcome to Filmista the perfect social media for movie lovers!
+# 🎥 Welcome to Filmista 
+
+## The perfect social media for movie lovers!
