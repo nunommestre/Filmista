@@ -6,8 +6,6 @@ import {
   query,
   where,
   getDocs,
-  getId,
-  doc,
   updateDoc,
 } from "firebase/firestore";
 import db from "./firebase";
@@ -18,7 +16,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // ----- 2. Components & Pages ----- //
 import NavBarSocialLinks from "./Components/NavBarLinks";
 // ----- Pages ----- //
-import { FriendContext } from "./friendContext";
 import PlaylistPage from "./Pages/PlaylistPage";
 import WatchedPage from "./Pages/WatchedPage";
 import FollowersPage from "./Pages/FollowersPage";
@@ -32,7 +29,7 @@ import HomePage from "./Pages/HomePage";
 // ----- 3. External Libraries ----- //
 import { useState, useEffect } from "react";
 import { Navbar } from "react-bootstrap";
-import { Amplify, API, graphqlOperation } from "aws-amplify";
+import { Amplify } from "aws-amplify";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 
 import "@aws-amplify/ui-react/styles.css";

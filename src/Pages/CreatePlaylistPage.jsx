@@ -4,16 +4,15 @@ import {
   query,
   where,
   getDocs,
-  getId,
   updateDoc,
   doc,
-  arrayUnion
+  arrayUnion,
 } from "firebase/firestore";
 import db from "../firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import "./CSS/createPlaylist.css"
-import { Image, Button, Col, Row, Container } from "react-bootstrap";
+import "./CSS/createPlaylist.css";
+import { Button, Col, Row, Container } from "react-bootstrap";
 import { ToastAlert } from "../Components/Toast/index";
 
 let redirect_Page = () => {
@@ -23,11 +22,8 @@ let redirect_Page = () => {
   }, 1500);
 };
 
-const CreatePlaylistPage = ({user}) => {
+const CreatePlaylistPage = ({ user }) => {
   const [real_name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [currentUsername, setCurrentUsername] = useState("");
-  const [bio, setBio] = useState("");
   const [image, setImage] = useState("");
   const [filePath, setFilePath] = useState();
   const [pfp, setPfp] = useState();
@@ -35,8 +31,11 @@ const CreatePlaylistPage = ({user}) => {
   useEffect(() => {
     setPfp("");
     setImage("");
-    ToastAlert("We are currently experiencing issues with creating playlists. Be sure to tap the CREATE button twice slowly, and wait to ensure you changes redirect you to the account page.", "info");
-  },[]);
+    ToastAlert(
+      "We are currently experiencing issues with creating playlists. Be sure to tap the CREATE button twice slowly, and wait to ensure you changes redirect you to the account page.",
+      "info"
+    );
+  }, []);
 
   const changeImage = (e) => {
     let file = e.target.files[0];
@@ -90,7 +89,7 @@ const CreatePlaylistPage = ({user}) => {
         id: "default",
         pfp: filePath,
         user_id: querySnapshot.docs[0].data().id,
-        movies: []
+        movies: [],
       };
       const docRef = await addDoc(collectionRef, payload);
       updateDoc(docRef, "id", docRef.id);
@@ -106,57 +105,73 @@ const CreatePlaylistPage = ({user}) => {
 
   return (
     <div className="create-playlist-page">
-    <div>
-    <h1>Create Playlist: </h1>
-    <h3>Name: </h3>
-     <input className="name-bar" type="text" defaultValue={real_name}
-            name="Name"
-            onChange={(e) => setName(e.target.value)} placeholder="Name..."/>
-    <h3>Cover Picture: </h3>
-  </div>
-  <Container className="g-0 p-0 m-0">
-            <Row md={6}>
+      <div>
+        <h1>Create Playlist: </h1>
+        <h3>Name: </h3>
+        <input
+          className="name-bar"
+          type="text"
+          defaultValue={real_name}
+          name="Name"
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Name..."
+        />
+        <h3>Cover Picture: </h3>
+      </div>
+      <Container className="g-0 p-0 m-0">
+        <Row md={6}>
+          <Col>
+            <img
+              width={200}
+              height={200}
+              className="col img-thumbnail"
+              src={pfp}
+              alt="pfp"
+              onError={(e) => {
+                e.target.src =
+                  "https://firebasestorage.googleapis.com/v0/b/filmista.appspot.com/o/movieeeeeeee.png?alt=media&token=b692fae8-702b-4f6c-925a-cc391dde2cd1";
+                e.onerror = null;
+              }}
+            />
+          </Col>
+          <Col>
+            <Container>
               <Col>
-                <img
-                  width={200}
-                  height={200}
-                  className="col img-thumbnail"
-                  src={pfp}
-                  alt="pfp"
-                  onError={(e) => {
-                    e.target.src = "https://firebasestorage.googleapis.com/v0/b/filmista.appspot.com/o/movieeeeeeee.png?alt=media&token=b692fae8-702b-4f6c-925a-cc391dde2cd1";
-                    e.onerror = null;
-                  }}
+                <input
+                  className="file-bar"
+                  type="file"
+                  onChange={changeImage}
                 />
               </Col>
               <Col>
-                <Container>
-                  <Col>
-                    <input
-                      className="file-bar"
-                      type="file"
-                      onChange={changeImage}
-                    />
-                  </Col>
-                  <Col>
-                    <Button
-                      variant="danger"
-                      className="remove-pfp"
-                      onClick={() => {
-                        setPfp("");
-                        setImage("");
-                      }}
-                    >
-                      Remove Picture
-                    </Button>
-                  </Col>
-                </Container>
+                <Button
+                  variant="danger"
+                  className="remove-pfp"
+                  onClick={() => {
+                    setPfp("");
+                    setImage("");
+                  }}
+                >
+                  Remove Picture
+                </Button>
               </Col>
-            </Row>
-          </Container>
-    <Button variant="light" className="creation-button" onClick={createPlaylist} >CREATE</Button>
-    <a href="/"><Button variant="danger" className="cancel-button">CANCEL</Button></a>
-  </div>
+            </Container>
+          </Col>
+        </Row>
+      </Container>
+      <Button
+        variant="light"
+        className="creation-button"
+        onClick={createPlaylist}
+      >
+        CREATE
+      </Button>
+      <a href="/">
+        <Button variant="danger" className="cancel-button">
+          CANCEL
+        </Button>
+      </a>
+    </div>
   );
 };
 

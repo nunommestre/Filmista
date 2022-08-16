@@ -1,6 +1,6 @@
 import React from "react";
 import FollowersDisplay from "../Components/Followers";
-  
+
 const FollowersPage = () => {
   return (
     <div>
@@ -8,5 +8,5 @@ const FollowersPage = () => {
     </div>
   );
 };
-  
+
 export default FollowersPage;

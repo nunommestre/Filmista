@@ -1,12 +1,12 @@
 import React from "react";
 import FriendsDisplay from "../Components/Friends";
-  
-const FriendsPage = ({user}) => {
+
+const FriendsPage = ({ user }) => {
   return (
     <div>
-      <FriendsDisplay user={user}/>
+      <FriendsDisplay user={user} />
     </div>
   );
 };
-  
+
 export default FriendsPage;

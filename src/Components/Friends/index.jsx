@@ -1,6 +1,3 @@
-/*
-This video helped with pulling in API Data and some styling: https://www.youtube.com/watch?v=sZ0bZGfg_m4&t=1182s
-*/
 import {
   onSnapshot,
   collection,
@@ -12,18 +9,11 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import db from "../../firebase";
 import Button from "react-bootstrap/Button";
 import "./friends.css";
 import { ToastAlert } from "../Toast";
-
-// ----- 1. API's ----- //
-const SEARCH_API =
-  "https://api.themoviedb.org/3/search/multi?&api_key=3989b90b8172707d9d75a1196763d35c&language=en-US&page=1&query=";
-const TOPRATED_API =
-  "https://api.themoviedb.org/3/movie/top_rated?api_key=3989b90b8172707d9d75a1196763d35c&page=1";
-const IMAGE_API = "https://image.tmdb.org/t/p/w500";
 
 const FriendsDisplay = ({ user }) => {
   const [friends, setFriends] = useState([
@@ -36,17 +26,13 @@ const FriendsDisplay = ({ user }) => {
       collection(db, "Users"),
       where("email", "!=", user.attributes.email.toLowerCase())
     );
-      onSnapshot(q, (snapshot) =>
+    onSnapshot(q, (snapshot) =>
       setFriends(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      )
-};
-  useEffect(
-    
-    () => {
-      FetchData();
-    },
-    []
-  );
+    );
+  };
+  useEffect(() => {
+    FetchData();
+  }, []);
   const formSubmission = async (e) => {
     e.preventDefault();
     const q = query(

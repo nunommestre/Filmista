@@ -1,10 +1,8 @@
 import {
-  addDoc,
   collection,
   query,
   where,
   getDocs,
-  getId,
   updateDoc,
   doc,
 } from "firebase/firestore";
@@ -47,7 +45,10 @@ const EditAccountPage = ({ user }) => {
   };
   useEffect(() => {
     FetchData();
-    ToastAlert("We are currently experiencing issues with editing accounts. Be sure to tap the UPDATE button twice slowly, and wait to ensure you changes redirect you to the account page.", "info");
+    ToastAlert(
+      "We are currently experiencing issues with editing accounts. Be sure to tap the UPDATE button twice slowly, and wait to ensure you changes redirect you to the account page.",
+      "info"
+    );
   }, []);
   const changeImage = (e) => {
     let file = e.target.files[0];
@@ -162,7 +163,7 @@ const EditAccountPage = ({ user }) => {
                   alt="pfp"
                   onError={(e) => {
                     e.target.src =
-                    "https://firebasestorage.googleapis.com/v0/b/filmista.appspot.com/o/user.png?alt=media&token=4aeb2856-a05a-42ed-baf1-d6006e776030";
+                      "https://firebasestorage.googleapis.com/v0/b/filmista.appspot.com/o/user.png?alt=media&token=4aeb2856-a05a-42ed-baf1-d6006e776030";
                     e.onerror = null;
                   }}
                 />
@@ -187,7 +188,12 @@ const EditAccountPage = ({ user }) => {
                     >
                       Remove Picture
                     </Button>
-                    <p><em>Note if you do not chose a profile picture it will reset your picture to the default image.</em></p>
+                    <p>
+                      <em>
+                        Note if you do not chose a profile picture it will reset
+                        your picture to the default image.
+                      </em>
+                    </p>
                   </Col>
                 </Container>
               </Col>

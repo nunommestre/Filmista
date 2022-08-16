@@ -1,19 +1,10 @@
-import {
-  addDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-  getId,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import db from "../firebase";
 
 import React, { useEffect, useState } from "react";
 import MovieDisplay from "../Components/Movie";
 
-const ExplorePage = ({user}) => {
+const ExplorePage = ({ user }) => {
   // ----- Return Statement ----- //
   const [userID, setUserID] = useState("");
   const FetchData = async () => {
@@ -26,14 +17,12 @@ const ExplorePage = ({user}) => {
       setUserID(document.data().id);
     });
   };
-  
+
   useEffect(() => {
     FetchData();
-    console.log(userID)
-    }, []);
-  return (
-      <MovieDisplay userID={userID}/>
-  );
-}
+    console.log(userID);
+  }, []);
+  return <MovieDisplay userID={userID} />;
+};
 
 export default ExplorePage;

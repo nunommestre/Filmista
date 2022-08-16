@@ -1,6 +1,6 @@
 import React from "react";
 import PlaylistDisplay from "../Components/Playlists";
-  
+
 const PlaylistPage = () => {
   return (
     <div>
@@ -8,5 +8,5 @@ const PlaylistPage = () => {
     </div>
   );
 };
-  
+
 export default PlaylistPage;

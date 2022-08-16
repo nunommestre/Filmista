@@ -1,6 +1,6 @@
 import React from "react";
 import WatchedDisplay from "../Components/Movies_Watched";
-  
+
 const WatchedPage = () => {
   return (
     <div>
@@ -8,5 +8,5 @@ const WatchedPage = () => {
     </div>
   );
 };
-  
+
 export default WatchedPage;
