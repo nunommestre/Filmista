@@ -1,7 +1,7 @@
 # 🎥 Welcome to Filmista 
 The perfect social media for movie lovers!
 
-### How to run locally:
+## Features:
 ```
-Step 1:
+#### Movie Rating
 ```
