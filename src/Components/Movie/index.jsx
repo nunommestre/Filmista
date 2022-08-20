@@ -214,7 +214,7 @@ const Movie = ({ title, poster_path, overview, vote_average, id, userID }) => {
       }
     };
     return (
-      <Button variant="danger" className="movie-button" onClick={addToPlaylist}>
+      <Button variant="dark" className="movie-button" onClick={addToPlaylist}>
         {name}
       </Button>
     );
